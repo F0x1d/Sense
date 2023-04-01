@@ -1,0 +1,18 @@
+<resources>
+    <string name="chats">Чаты</string>
+    <string name="nothing_there">Здесь пусто</string>
+    <string name="message">Сообщение</string>
+    <string name="you">Вы</string>
+    <string name="settings">Настройки</string>
+    <string name="api_key">API Ключ</string>
+    <string name="setup">Настройка</string>
+    <string name="model">Модель</string>
+
+    <string name="api_key_is_required_to_access_api">API Ключ необходим для доступа к API OpenAI</string>
+    <string name="how_to_get_it">Как его получить</string>
+    <string name="instruction_part_1_1">Войдите в свой аккаунт на</string>
+    <string name="instruction_part_2">Нажмите на иконку профиля</string>
+    <string name="instruction_part_3">Нажмите \"View API Keys\"</string>
+    <string name="instruction_part_4">Нажмите \"Create new secret key\"</string>
+    <string name="instruction_part_5">Скопируйте его и вставьте ниже</string>
+</resources>
