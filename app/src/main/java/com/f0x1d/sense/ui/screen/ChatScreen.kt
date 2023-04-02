@@ -1,8 +1,10 @@
 package com.f0x1d.sense.ui.screen
 
 import android.app.Activity
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -18,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.f0x1d.sense.R
@@ -29,12 +32,12 @@ import com.f0x1d.sense.viewmodel.ChatViewModel
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun ChatScreen(navController: NavController, chatId: Long) {
     val viewModel = chatViewModel(chatId = chatId)
 
-    val chatWithMessages by viewModel.chatWithMessages.collectAsState(initial = null)
+    val chatWithMessages by viewModel.chatWithMessages.collectAsStateWithLifecycle(initialValue = null)
 
     val text by viewModel.text.observeAsState()
     val addingMyMessage by viewModel.addingMyMessage.observeAsState()
@@ -63,7 +66,9 @@ fun ChatScreen(navController: NavController, chatId: Long) {
             navigationIcon = { NavigationBackIcon(navController = navController) }
         )
 
-        Divider()
+        AnimatedVisibility(visible = lazyListState.canScrollForward) {
+            Divider()
+        }
 
         Box(modifier = Modifier.weight(1f)) {
             LazyColumn(
@@ -99,12 +104,12 @@ fun ChatScreen(navController: NavController, chatId: Long) {
             androidx.compose.animation.AnimatedVisibility(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(5.dp),
+                    .padding(10.dp),
                 visible = scrollDownFabVisible,
-                enter = fadeIn(),
-                exit = fadeOut()
+                enter = scaleIn(),
+                exit = scaleOut()
             ) {
-                FloatingActionButton(
+                SmallFloatingActionButton(
                     onClick = {
                         scope.launch {
                             lazyListState.animateScrollToItem(0)
@@ -128,7 +133,9 @@ fun ChatScreen(navController: NavController, chatId: Long) {
             }
         }
 
-        Divider()
+        AnimatedVisibility(visible = lazyListState.canScrollBackward) {
+            Divider()
+        }
 
         Row(
             modifier = Modifier

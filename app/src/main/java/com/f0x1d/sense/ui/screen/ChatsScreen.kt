@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.f0x1d.sense.R
 import com.f0x1d.sense.model.Screen
@@ -23,7 +24,7 @@ import com.f0x1d.sense.viewmodel.ChatsViewModel
 fun ChatsScreen(navController: NavController) {
     val viewModel = hiltViewModel<ChatsViewModel>()
 
-    val chatsWithMessages by viewModel.chatsWithMessages.collectAsState(initial = emptyList())
+    val chatsWithMessages by viewModel.chatsWithMessages.collectAsStateWithLifecycle(initialValue = emptyList())
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 

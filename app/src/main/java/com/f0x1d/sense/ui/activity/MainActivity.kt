@@ -4,15 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -44,47 +42,39 @@ class MainActivity: ComponentActivity() {
         setContent {
             OpenAITheme {
                 Surface(modifier = Modifier.imePadding()) {
-                    val apiKey by viewModel.apiKey.collectAsState(initial = "")
+                    val apiKey by viewModel.apiKey.collectAsStateWithLifecycle(initialValue = "")
 
-                    val navController = rememberNavController()
+                    Crossfade(targetState = apiKey) {
+                        if (it == null) {
+                            SetupScreen()
+                        } else {
+                            val navController = rememberNavController()
 
-                    AnimatedVisibility(
-                        visible = apiKey != null,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        NavHost(
-                            navController = navController,
-                            startDestination = Screen.Chats.route
-                        ) {
-                            composable(Screen.Chats.route) {
-                                ChatsScreen(navController = navController)
-                            }
-
-                            composable(
-                                route = "${Screen.Chat.route}/{id}",
-                                arguments = listOf(
-                                    navArgument("id") { type = NavType.LongType }
-                                )
+                            NavHost(
+                                navController = navController,
+                                startDestination = Screen.Chats.route
                             ) {
-                                ChatScreen(
-                                    navController = navController,
-                                    chatId = it.arguments?.getLong("id")!!
-                                )
-                            }
+                                composable(Screen.Chats.route) {
+                                    ChatsScreen(navController = navController)
+                                }
 
-                            composable(Screen.Settings.route) {
-                                SettingsScreen(navController = navController)
+                                composable(
+                                    route = "${Screen.Chat.route}/{id}",
+                                    arguments = listOf(
+                                        navArgument("id") { type = NavType.LongType }
+                                    )
+                                ) {
+                                    ChatScreen(
+                                        navController = navController,
+                                        chatId = it.arguments?.getLong("id")!!
+                                    )
+                                }
+
+                                composable(Screen.Settings.route) {
+                                    SettingsScreen(navController = navController)
+                                }
                             }
                         }
-                    }
-
-                    AnimatedVisibility(
-                        visible = apiKey == null,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        SetupScreen()
                     }
                 }
             }
