@@ -1,6 +1,7 @@
 package com.f0x1d.sense.repository.network
 
 import com.f0x1d.sense.database.entity.ChatMessage
+import com.f0x1d.sense.model.network.request.GenerateImageRequestBody
 import com.f0x1d.sense.model.network.request.GenerateMessagesRequestBody
 import com.f0x1d.sense.repository.base.BaseRepository
 import com.f0x1d.sense.repository.network.service.OpenAIService
@@ -14,6 +15,10 @@ class OpenAIRepository @Inject constructor(
     private val openAIService: OpenAIService,
     private val settingsDataStore: SettingsDataStore
 ): BaseRepository() {
+
+    suspend fun generateImage(prompt: String) = openAIService.generateImage(
+        GenerateImageRequestBody(prompt)
+    ).data.first().url
 
     suspend fun generateMessages(messages: List<ChatMessage>) = openAIService.generateMessages(
         GenerateMessagesRequestBody(

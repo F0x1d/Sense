@@ -33,6 +33,12 @@ fun ChatsScreen(navController: NavController) {
             LargeTopAppBar(
                 title = { Text(text = stringResource(id = R.string.chats)) },
                 actions = {
+                    IconButton(onClick = { navController.navigate(Screen.Pictures.route) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_photo),
+                            contentDescription = null
+                        )
+                    }
                     IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_settings),

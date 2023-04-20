@@ -49,7 +49,7 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
             }?.close()
         } else {
             withContext(Dispatchers.Main) {
-                Toast.makeText(ctx, e.localizedMessage, Toast.LENGTH_LONG).show()
+                Toast.makeText(ctx, "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
             }
         }
     }

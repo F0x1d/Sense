@@ -9,6 +9,9 @@
     <string name="api_key">API Key</string>
     <string name="setup">Setup</string>
     <string name="model">Model</string>
+    <string name="picture">Picture</string>
+    <string name="pictures">Pictures</string>
+    <string name="download_started">Download started</string>
 
     <string name="api_key_is_required_to_access_api">API Key is required to access OpenAI API</string>
     <string name="how_to_get_it">How to get it</string>

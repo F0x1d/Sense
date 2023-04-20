@@ -19,6 +19,7 @@ import androidx.navigation.navArgument
 import com.f0x1d.sense.model.Screen
 import com.f0x1d.sense.ui.screen.ChatScreen
 import com.f0x1d.sense.ui.screen.ChatsScreen
+import com.f0x1d.sense.ui.screen.PicturesScreen
 import com.f0x1d.sense.ui.screen.SettingsScreen
 import com.f0x1d.sense.ui.screen.SetupScreen
 import com.f0x1d.sense.ui.theme.OpenAITheme
@@ -68,6 +69,10 @@ class MainActivity: ComponentActivity() {
                                         navController = navController,
                                         chatId = it.arguments?.getLong("id")!!
                                     )
+                                }
+
+                                composable(Screen.Pictures.route) {
+                                    PicturesScreen(navController = navController)
                                 }
 
                                 composable(Screen.Settings.route) {

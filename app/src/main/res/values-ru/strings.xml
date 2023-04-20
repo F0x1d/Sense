@@ -7,6 +7,9 @@
     <string name="api_key">API Ключ</string>
     <string name="setup">Настройка</string>
     <string name="model">Модель</string>
+    <string name="picture">Изображение</string>
+    <string name="pictures">Изображения</string>
+    <string name="download_started">Загрузка началась</string>
 
     <string name="api_key_is_required_to_access_api">API Ключ необходим для доступа к API OpenAI</string>
     <string name="how_to_get_it">Как его получить</string>

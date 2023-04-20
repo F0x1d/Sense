@@ -9,8 +9,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,7 +36,7 @@ fun SetupScreen() {
     var apiKey by rememberSaveable { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Column {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             TopAppBar(title = { Text(text = stringResource(id = R.string.setup)) })
             
             Column(modifier = Modifier.padding(horizontal = 15.dp)) {
