@@ -23,10 +23,10 @@ import com.f0x1d.sense.viewmodel.SettingsViewModel
 fun SettingsScreen(navController: NavController) {
     val viewModel = hiltViewModel<SettingsViewModel>()
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    
     val apiKey by viewModel.apiKey.observeAsState()
     val model by viewModel.model.observeAsState()
+
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     
     Column {
         LargeTopAppBar(

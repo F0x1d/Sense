@@ -26,7 +26,7 @@ class PicturesViewModel @Inject constructor(
     val loading = MutableLiveData<Boolean>()
     val pictureUrl = MutableLiveData<String?>()
 
-    fun generate() = viewModelScope.onIO {
+    fun generate() = viewModelScope.onIO({
         query.value!!.trim().also { query ->
             if (query.isEmpty()) return@onIO
 
@@ -36,7 +36,7 @@ class PicturesViewModel @Inject constructor(
 
             pictureUrl.suspendSetValue(imageUrl)
         }
-    }
+    }) { loading.suspendSetValue(false) }
 
     fun download() {
         val request = DownloadManager.Request(Uri.parse(pictureUrl.value!!))

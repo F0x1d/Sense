@@ -12,8 +12,12 @@
     <string name="picture">Picture</string>
     <string name="pictures">Pictures</string>
     <string name="download_started">Download started</string>
+    <string name="github" translatable="false">GitHub</string>
+    <string name="releases">Releases</string>
+    <string name="information">Information</string>
+    <string name="version_developed_by">v%s (%d). Developed by F0x1d</string>
 
-    <string name="api_key_is_required_to_access_api">API Key is required to access OpenAI API</string>
+    <string name="api_key_is_required_to_access_api">Key is required to access OpenAI API</string>
     <string name="how_to_get_it">How to get it</string>
     <string name="instruction_part_1_1">Log in to your account on</string>
     <string name="instruction_part_1_2" translatable="false">OpenAI</string>

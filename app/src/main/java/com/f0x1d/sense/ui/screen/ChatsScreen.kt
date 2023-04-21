@@ -5,16 +5,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.f0x1d.sense.BuildConfig
 import com.f0x1d.sense.R
+import com.f0x1d.sense.extensions.openLink
 import com.f0x1d.sense.model.Screen
 import com.f0x1d.sense.ui.widget.Chat
 import com.f0x1d.sense.viewmodel.ChatsViewModel
@@ -28,11 +32,19 @@ fun ChatsScreen(navController: NavController) {
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
+    var infoDialogOpened by rememberSaveable { mutableStateOf(false) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             LargeTopAppBar(
                 title = { Text(text = stringResource(id = R.string.chats)) },
                 actions = {
+                    IconButton(onClick = { infoDialogOpened = true }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_info),
+                            contentDescription = null
+                        )
+                    }
                     IconButton(onClick = { navController.navigate(Screen.Pictures.route) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_photo),
@@ -89,5 +101,32 @@ fun ChatsScreen(navController: NavController) {
                 contentDescription = null
             )
         }
+
+        InfoDialog(opened = infoDialogOpened) {
+            infoDialogOpened = false
+        }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun InfoDialog(opened: Boolean, onClose: () -> Unit) {
+    if (!opened) return
+    val context = LocalContext.current
+
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text(text = stringResource(id = R.string.information)) },
+        text = { Text(text = stringResource(id = R.string.version_developed_by, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)) },
+        confirmButton = {
+            TextButton(onClick = { context.openLink("https://github.com/F0x1d/Sense") }) {
+                Text(text = stringResource(id = R.string.github))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { context.openLink("https://t.me/f0x1dsshit") }) {
+                Text(text = stringResource(id = R.string.releases))
+            }
+        }
+    )
 }

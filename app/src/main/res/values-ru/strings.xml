@@ -10,8 +10,11 @@
     <string name="picture">Изображение</string>
     <string name="pictures">Изображения</string>
     <string name="download_started">Загрузка началась</string>
+    <string name="releases">Релизы</string>
+    <string name="information">Информация</string>
+    <string name="version_developed_by">v%s (%d). Разработано F0x1d</string>
 
-    <string name="api_key_is_required_to_access_api">API Ключ необходим для доступа к API OpenAI</string>
+    <string name="api_key_is_required_to_access_api">Ключ необходим для доступа к API OpenAI</string>
     <string name="how_to_get_it">Как его получить</string>
     <string name="instruction_part_1_1">Войдите в свой аккаунт на</string>
     <string name="instruction_part_2">Нажмите на иконку профиля</string>

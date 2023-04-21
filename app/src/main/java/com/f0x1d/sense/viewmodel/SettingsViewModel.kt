@@ -3,6 +3,7 @@ package com.f0x1d.sense.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.f0x1d.sense.extensions.suspendSetValue
 import com.f0x1d.sense.store.datastore.SettingsDataStore
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,7 +41,7 @@ class SettingsViewModel @Inject constructor(
                     LiveDataWithValue(it.key, it.value.invoke())
                 }
             }.awaitAll().forEach {
-                it.liveData.value = it.value
+                it.liveData.suspendSetValue(it.value)
             }
         }
     }

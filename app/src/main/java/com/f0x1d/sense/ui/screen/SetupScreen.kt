@@ -1,8 +1,6 @@
 package com.f0x1d.sense.ui.screen
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.TypedValue
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -26,6 +24,7 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.f0x1d.sense.R
+import com.f0x1d.sense.extensions.openLink
 import com.f0x1d.sense.viewmodel.SetupViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,7 +126,7 @@ fun InstructionPart(index: Int, instruction: AnnotatedString) {
     val context = LocalContext.current
 
     if (index != 0) {
-        Divider()
+        Divider(color = MaterialTheme.colorScheme.secondaryContainer)
     }
 
     Row(
@@ -152,7 +151,7 @@ fun InstructionPart(index: Int, instruction: AnnotatedString) {
             onClick = { offset ->
                 instruction.getStringAnnotations(tag = "openai", offset, offset).firstOrNull()
                     ?.let {
-                        context.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(it.item)))
+                        context.openLink(it.item)
                     }
             }
         )
