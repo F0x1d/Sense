@@ -18,6 +18,9 @@ interface MessagesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(messages: List<ChatMessage>)
 
+    @Query("UPDATE ChatMessage SET generating = 0 WHERE generating = 1 AND chat_id = :chatId")
+    suspend fun markAllAsNotGeneratingInChat(chatId: Long)
+
     @Query("DELETE FROM ChatMessage WHERE generating = 1")
     suspend fun deleteGeneratingMessages()
 }

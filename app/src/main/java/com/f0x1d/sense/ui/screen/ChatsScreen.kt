@@ -117,7 +117,7 @@ private fun InfoDialog(opened: Boolean, onClose: () -> Unit) {
     AlertDialog(
         onDismissRequest = onClose,
         title = { Text(text = stringResource(id = R.string.information)) },
-        text = { Text(text = stringResource(id = R.string.version_developed_by, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)) },
+        text = { Text(text = stringResource(id = R.string.version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)) },
         confirmButton = {
             TextButton(onClick = { context.openLink("https://github.com/F0x1d/Sense") }) {
                 Text(text = stringResource(id = R.string.github))

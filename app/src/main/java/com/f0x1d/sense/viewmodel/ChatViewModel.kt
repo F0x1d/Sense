@@ -87,7 +87,7 @@ class ChatViewModel @AssistedInject constructor(
             responseMessages.values.map { it.copy(generating = false) }
         )
     }) {
-        database.messagesDao().deleteGeneratingMessages()
+        database.messagesDao().markAllAsNotGeneratingInChat(chatId)
     }
 
     fun addedMyMessage() {
