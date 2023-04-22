@@ -39,7 +39,7 @@ class ChatViewModel @AssistedInject constructor(
     val addingMyMessage = MutableLiveData(false)
 
     fun send(chatWithMessages: ChatWithMessages) = OpenAIApplication.applicationScope.onIO({
-        if (database.messagesDao().countEmptyMessages() > 0) return@onIO
+        if (database.messagesDao().countGeneratingMessagesInChat(chatId) > 0) return@onIO
 
         val messageText = text.value?.trim()
         if (messageText?.isEmpty() == true) return@onIO
@@ -61,26 +61,33 @@ class ChatViewModel @AssistedInject constructor(
 
         val responseMessage = ChatMessage(
             role = "assistant",
+            generating = true,
             chatId = chatId
         )
         val responseMessageId = database.messagesDao().insert(userMessage, responseMessage).last()
 
-        openAIRepository.generateMessages(chatWithMessages.messages.asReversed() + userMessage).mapIndexed { index, message ->
-            val content = message.content?.trim()
-
-            if (index == 0) responseMessage.copy(
+        val responseMessages = mutableMapOf(0 to responseMessage.copy(id = responseMessageId))
+        openAIRepository.generateMessagesStream(chatWithMessages.messages.asReversed() + userMessage).collect { (index, content) ->
+            responseMessages.getOrPut(index) {
+                responseMessage.copy(id = 0)
+            }.copy(
                 content = content,
-                time = System.currentTimeMillis(),
-                id = responseMessageId
-            ) else message.copy(
-                content = content,
-                chatId = chatId
-            )
-        }.also {
-            database.messagesDao().insert(it)
+                time = System.currentTimeMillis()
+            ).also { message ->
+                database.messagesDao().insert(message).first().also { newId ->
+                    if (message.id == 0L)
+                        responseMessages[index] = message.copy(id = newId)
+                    else
+                        responseMessages[index] = message
+                }
+            }
         }
+
+        database.messagesDao().insert(
+            responseMessages.values.map { it.copy(generating = false) }
+        )
     }) {
-        database.messagesDao().deleteEmptyMessages()
+        database.messagesDao().deleteGeneratingMessages()
     }
 
     fun addedMyMessage() {

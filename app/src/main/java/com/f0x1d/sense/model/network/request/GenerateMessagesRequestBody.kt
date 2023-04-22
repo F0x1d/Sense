@@ -7,5 +7,6 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class GenerateMessagesRequestBody(
     @SerializedName("messages") val messages: List<ChatMessage>,
-    @SerializedName("model") val model: String
+    @SerializedName("model") val model: String,
+    @SerializedName("stream") val stream: Boolean = true
 )

@@ -25,6 +25,7 @@ data class Chat(
 )
 data class ChatMessage(
     @ColumnInfo(name = "content") val content: String? = null,
+    @ColumnInfo(name = "generating") @GsonSkip val generating: Boolean = false,
     @ColumnInfo(name = "time") @GsonSkip val time: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "role") val role: String? = null,
     @ColumnInfo(name = "chat_id", index = true) @GsonSkip val chatId: Long? = 0,

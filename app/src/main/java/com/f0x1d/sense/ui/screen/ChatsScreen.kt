@@ -67,7 +67,7 @@ fun ChatsScreen(navController: NavController) {
                     top = 16.dp,
                     start = 16.dp,
                     end = 16.dp,
-                    bottom = 88.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+                    bottom = bottomPaddingForFAB()
                 ),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -130,3 +130,6 @@ private fun InfoDialog(opened: Boolean, onClose: () -> Unit) {
         }
     )
 }
+
+@Composable
+fun bottomPaddingForFAB() = 88.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()

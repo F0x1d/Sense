@@ -12,7 +12,7 @@
     <string name="download_started">Загрузка началась</string>
     <string name="releases">Релизы</string>
     <string name="information">Информация</string>
-    <string name="version_developed_by">v%s (%d). Разработано F0x1d</string>
+    <string name="version_developed_by">v%s (%d). Разработано F0x1d\n\nЕщё посмотрите другие мои проекты на GitHub или Telegram (Например, Sense для iOS можно скачать в моём канале с релизами)</string>
 
     <string name="api_key_is_required_to_access_api">Ключ необходим для доступа к API OpenAI</string>
     <string name="how_to_get_it">Как его получить</string>

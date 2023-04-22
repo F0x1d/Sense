@@ -21,5 +21,6 @@ object RoomModule {
         AppDatabase::class.java,
         "chats"
     )
+        .addMigrations(AppDatabase.MIGRATION_1_2)
         .build()
 }

@@ -9,8 +9,8 @@ import com.f0x1d.sense.database.entity.ChatMessage
 @Dao
 interface MessagesDao {
 
-    @Query("SELECT COUNT(*) FROM ChatMessage WHERE content is null")
-    suspend fun countEmptyMessages(): Int
+    @Query("SELECT COUNT(*) FROM ChatMessage WHERE generating = 1 AND chat_id = :chatId")
+    suspend fun countGeneratingMessagesInChat(chatId: Long): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg message: ChatMessage): List<Long>
@@ -18,6 +18,6 @@ interface MessagesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(messages: List<ChatMessage>)
 
-    @Query("DELETE FROM ChatMessage WHERE content is null")
-    suspend fun deleteEmptyMessages()
+    @Query("DELETE FROM ChatMessage WHERE generating = 1")
+    suspend fun deleteGeneratingMessages()
 }
