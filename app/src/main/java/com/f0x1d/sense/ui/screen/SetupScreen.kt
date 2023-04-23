@@ -12,9 +12,9 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -31,8 +31,6 @@ import com.f0x1d.sense.viewmodel.SetupViewModel
 @Composable
 fun SetupScreen() {
     val viewModel = hiltViewModel<SetupViewModel>()
-
-    var apiKey by rememberSaveable { mutableStateOf("") }
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -106,8 +104,8 @@ fun SetupScreen() {
                             end = 15.dp,
                             bottom = bottomPaddingForFAB()
                         ),
-                    value = apiKey,
-                    onValueChange = { apiKey = it },
+                    value = viewModel.apiKey,
+                    onValueChange = { viewModel.apiKey = it },
                     label = { Text(text = stringResource(id = R.string.api_key)) },
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -118,14 +116,12 @@ fun SetupScreen() {
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
                     .navigationBarsPadding(),
-                visible = apiKey.isNotEmpty(),
+                visible = viewModel.apiKey.isNotEmpty(),
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
                 FloatingActionButton(
-                    onClick = {
-                        viewModel.saveApiKey(apiKey)
-                    }
+                    onClick = { viewModel.saveApiKey() }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_done),
@@ -165,10 +161,9 @@ fun InstructionPart(index: Int, instruction: AnnotatedString) {
                 color = LocalContentColor.current
             ),
             onClick = { offset ->
-                instruction.getStringAnnotations(tag = "openai", offset, offset).firstOrNull()
-                    ?.let {
-                        context.openLink(it.item)
-                    }
+                instruction.getStringAnnotations(tag = "openai", offset, offset).firstOrNull()?.let {
+                    context.openLink(it.item)
+                }
             }
         )
     }
@@ -187,7 +182,13 @@ private fun buildFirstInstruction() = buildAnnotatedString {
 }
 
 @Composable
-fun getColor(color: Int) = colorResource(LocalContext.current.getColorFromAttrs(color).resourceId)
+fun getColor(color: Int): Color {
+    val context = LocalContext.current
+
+    return colorResource(id = remember(key1 = color) {
+        context.getColorFromAttrs(color).resourceId
+    })
+}
 private fun Context.getColorFromAttrs(attr: Int) = TypedValue().apply {
     theme.resolveAttribute(attr, this, true)
 }

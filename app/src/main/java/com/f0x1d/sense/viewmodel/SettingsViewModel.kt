@@ -1,12 +1,13 @@
 package com.f0x1d.sense.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.f0x1d.sense.extensions.suspendSetValue
 import com.f0x1d.sense.store.datastore.SettingsDataStore
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
@@ -21,12 +22,12 @@ class SettingsViewModel @Inject constructor(
     private val settingsDataStore: SettingsDataStore
 ): BaseViewModel(application) {
 
-    val apiKey = MutableLiveData("")
-    val model = MutableLiveData("")
+    val apiKey = mutableStateOf("")
+    val model = mutableStateOf("")
 
-    private val fillings = mutableMapOf<MutableLiveData<String>, suspend () -> String?>()
-    private val mutexes = mutableMapOf<MutableLiveData<String>, Mutex>()
-    private val actions = mutableMapOf<MutableLiveData<String>, suspend (String) -> Unit>()
+    private val fillings = mutableMapOf<MutableState<String>, suspend () -> String?>()
+    private val mutexes = mutableMapOf<MutableState<String>, Mutex>()
+    private val actions = mutableMapOf<MutableState<String>, suspend (String) -> Unit>()
 
     init {
         fillings[apiKey] = { settingsDataStore.apiKey.first() }
@@ -38,26 +39,26 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             fillings.entries.map {
                 async {
-                    LiveDataWithValue(it.key, it.value.invoke())
+                    StateWithValue(it.key, it.value.invoke())
                 }
             }.awaitAll().forEach {
-                it.liveData.suspendSetValue(it.value)
+                it.state.value = (it.value) ?: ""
             }
         }
     }
 
-    fun updateFor(liveData: MutableLiveData<String>, value: String) {
-        liveData.value = value
+    fun updateFor(state: MutableState<String>, value: String) {
+        state.value = value
 
-        viewModelScope.launch {
-            mutexes.getOrPut(liveData) { Mutex() }.withLock {
-                actions[liveData]?.invoke(value)
+        viewModelScope.launch(Dispatchers.Default) {
+            mutexes.getOrPut(state) { Mutex() }.withLock {
+                actions[state]?.invoke(value)
             }
         }
     }
 
-    private data class LiveDataWithValue(
-        val liveData: MutableLiveData<String>,
+    private data class StateWithValue(
+        val state: MutableState<String>,
         val value: String?
     )
 }

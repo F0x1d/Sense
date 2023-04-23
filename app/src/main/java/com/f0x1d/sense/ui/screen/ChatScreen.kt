@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -59,16 +58,13 @@ fun ChatScreen(navController: NavController, chatId: Long) {
 
     val chatWithMessages by viewModel.chatWithMessages.collectAsStateWithLifecycle(initialValue = null)
 
-    val text by viewModel.text.observeAsState()
-    val addingMyMessage by viewModel.addingMyMessage.observeAsState()
-
     val lazyListState = rememberLazyListState()
 
     val scope = rememberCoroutineScope()
 
     val scrollDownFabVisible by remember {
         derivedStateOf {
-            lazyListState.canScrollBackward && addingMyMessage != true && (
+            lazyListState.canScrollBackward && !viewModel.addingMyMessage && (
                     lazyListState.firstVisibleItemIndex > 0 || lazyListState.firstVisibleItemScrollOffset > 50
             )
         }
@@ -149,7 +145,7 @@ fun ChatScreen(navController: NavController, chatId: Long) {
                 chatWithMessages?.messages?.also { messages ->
                     lazyListState.animateScrollToItem(0)
                 }
-                viewModel.addedMyMessage()
+                viewModel.addingMyMessage = false
             }
         }
 
@@ -172,8 +168,8 @@ fun ChatScreen(navController: NavController, chatId: Long) {
                         bottom = 10.dp
                     )
                     .weight(1f),
-                value = text ?: "",
-                onValueChange = { viewModel.updateText(it) },
+                value = viewModel.text,
+                onValueChange = { viewModel.text = it },
                 label = { Text(text = stringResource(R.string.message)) },
                 shape = RoundedCornerShape(20.dp)
             )

@@ -1,14 +1,15 @@
 package com.f0x1d.sense.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.f0x1d.sense.OpenAIApplication
 import com.f0x1d.sense.database.AppDatabase
 import com.f0x1d.sense.database.entity.ChatMessage
 import com.f0x1d.sense.database.entity.ChatWithMessages
-import com.f0x1d.sense.extensions.suspendSetValue
 import com.f0x1d.sense.repository.network.OpenAIRepository
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.assisted.Assisted
@@ -35,23 +36,23 @@ class ChatViewModel @AssistedInject constructor(
         it.copy(messages = it.messages.asReversed())
     }
 
-    val text = MutableLiveData("")
-    val addingMyMessage = MutableLiveData(false)
+    var text by mutableStateOf("")
+    var addingMyMessage by mutableStateOf(false)
 
     fun send(chatWithMessages: ChatWithMessages) = OpenAIApplication.applicationScope.onIO({
         if (database.messagesDao().countGeneratingMessagesInChat(chatId) > 0) return@onIO
 
-        val messageText = text.value?.trim()
-        if (messageText?.isEmpty() == true) return@onIO
+        val messageText = text.trim()
+        if (messageText.isEmpty()) return@onIO
 
-        addingMyMessage.suspendSetValue(true)
+        addingMyMessage = true
 
         val userMessage = ChatMessage(
             content = messageText,
             role = "user",
             chatId = chatId
         )
-        text.postValue("")
+        text = ""
 
         chatWithMessages.chat.also { chat ->
             if (chat.title == null) {
@@ -88,14 +89,6 @@ class ChatViewModel @AssistedInject constructor(
         )
     }) {
         database.messagesDao().markAllAsNotGeneratingInChat(chatId)
-    }
-
-    fun addedMyMessage() {
-        addingMyMessage.value = false
-    }
-
-    fun updateText(text: String) {
-        this.text.value = text
     }
 }
 

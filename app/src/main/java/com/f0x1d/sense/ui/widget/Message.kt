@@ -67,7 +67,11 @@ fun LazyItemScope.TypingMessage(needTitle: Boolean = true) {
 }
 
 @Composable
-private fun LazyItemScope.BaseMessage(message: ChatMessage, needTitle: Boolean = true, content: @Composable ColumnScope.() -> Unit) {
+private fun LazyItemScope.BaseMessage(
+    message: ChatMessage,
+    needTitle: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.size(if (message.fromUser) 20.dp else 5.dp))
 

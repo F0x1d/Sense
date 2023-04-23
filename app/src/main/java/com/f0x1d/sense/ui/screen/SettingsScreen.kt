@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -23,8 +22,8 @@ import com.f0x1d.sense.viewmodel.SettingsViewModel
 fun SettingsScreen(navController: NavController) {
     val viewModel = hiltViewModel<SettingsViewModel>()
 
-    val apiKey by viewModel.apiKey.observeAsState()
-    val model by viewModel.model.observeAsState()
+    val apiKey by viewModel.apiKey
+    val model by viewModel.model
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     

@@ -23,8 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -48,10 +46,6 @@ import com.f0x1d.sense.viewmodel.PicturesViewModel
 @Composable
 fun PicturesScreen(navController: NavController) {
     val viewModel = hiltViewModel<PicturesViewModel>()
-
-    val query by viewModel.query.observeAsState()
-    val loading by viewModel.loading.observeAsState()
-    val pictureUrl by viewModel.pictureUrl.observeAsState()
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
@@ -80,9 +74,9 @@ fun PicturesScreen(navController: NavController) {
                             end = 10.dp,
                             bottom = 20.dp
                         ),
-                    value = query ?: "",
-                    onValueChange = { viewModel.updateQuery(it) },
-                    enabled = loading != true,
+                    value = viewModel.query,
+                    onValueChange = { viewModel.query = it },
+                    enabled = !viewModel.loading,
                     label = { Text(text = stringResource(R.string.picture)) },
                     shape = RoundedCornerShape(12.dp),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
@@ -91,11 +85,11 @@ fun PicturesScreen(navController: NavController) {
                     })
                 )
 
-                if (loading == true) {
+                if (viewModel.loading) {
                     LoadingIndicator()
-                } else if (pictureUrl != null) {
+                } else if (viewModel.pictureUrl != null) {
                     val painter = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current)
-                        .data(pictureUrl)
+                        .data(viewModel.pictureUrl)
                         .transformations(RoundedCornersTransformation(with(LocalDensity.current) { 12.dp.toPx() }))
                         .crossfade(true)
                         .build()

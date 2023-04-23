@@ -4,11 +4,12 @@ import android.app.Application
 import android.app.DownloadManager
 import android.net.Uri
 import android.os.Environment
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.f0x1d.sense.R
 import com.f0x1d.sense.extensions.downloadManager
-import com.f0x1d.sense.extensions.suspendSetValue
 import com.f0x1d.sense.extensions.toast
 import com.f0x1d.sense.repository.network.OpenAIRepository
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
@@ -21,34 +22,30 @@ class PicturesViewModel @Inject constructor(
     private val openAIRepository: OpenAIRepository
 ): BaseViewModel(application) {
 
-    val query = MutableLiveData("")
+    var query by mutableStateOf("")
 
-    val loading = MutableLiveData<Boolean>()
-    val pictureUrl = MutableLiveData<String?>()
+    var loading by mutableStateOf(false)
+    var pictureUrl by mutableStateOf<String?>(null)
 
     fun generate() = viewModelScope.onIO({
-        query.value!!.trim().also { query ->
+        query.trim().also { query ->
             if (query.isEmpty()) return@onIO
 
-            loading.suspendSetValue(true)
+            loading = true
             val imageUrl = openAIRepository.generateImage(query)
-            loading.suspendSetValue(false)
+            loading = false
 
-            pictureUrl.suspendSetValue(imageUrl)
+            pictureUrl = imageUrl
         }
-    }) { loading.suspendSetValue(false) }
+    }) { loading = false }
 
     fun download() {
-        val request = DownloadManager.Request(Uri.parse(pictureUrl.value!!))
+        val request = DownloadManager.Request(Uri.parse(pictureUrl))
         request.setTitle(ctx.getString(R.string.picture))
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "Sense/image-${System.currentTimeMillis()}.png")
 
         ctx.downloadManager.enqueue(request)
         ctx.toast(R.string.download_started)
-    }
-
-    fun updateQuery(query: String) {
-        this.query.value = query
     }
 }
