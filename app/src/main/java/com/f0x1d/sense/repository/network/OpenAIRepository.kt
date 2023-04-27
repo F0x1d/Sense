@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.isActive
+import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,7 +46,11 @@ class OpenAIRepository @Inject constructor(
             )
         ).execute()
 
-        val reader = response.body()?.byteStream()?.bufferedReader() ?: throw Exception()
+        if (response.errorBody() != null) {
+            throw HttpException(response)
+        }
+
+        val reader = response.body()?.byteStream()?.bufferedReader() ?: throw Exception("null stream")
         try {
             val contents = mutableMapOf<Int, String>()
             while (currentCoroutineContext().isActive) {

@@ -43,10 +43,10 @@ class MainActivity: ComponentActivity() {
         setContent {
             OpenAITheme {
                 Surface(modifier = Modifier.imePadding()) {
-                    val apiKey by viewModel.apiKey.collectAsStateWithLifecycle(initialValue = "")
+                    val openSetup by viewModel.shouldOpenSetup.collectAsStateWithLifecycle(initialValue = false)
 
-                    Crossfade(targetState = apiKey) {
-                        if (it == null) {
+                    Crossfade(targetState = openSetup) {
+                        if (it) {
                             SetupScreen()
                         } else {
                             val navController = rememberNavController()

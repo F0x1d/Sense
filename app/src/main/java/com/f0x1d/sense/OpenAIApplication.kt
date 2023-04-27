@@ -22,7 +22,10 @@ class OpenAIApplication: Application() {
         super.onCreate()
 
         applicationScope.launch(Dispatchers.IO) {
-            database.messagesDao().markAllAsNotGenerating() // maybe some geniuses will remove app from recents
+            database.messagesDao().apply {
+                markAllAsNotGenerating()
+                deleteEmptyMessages()
+            } // maybe some geniuses will remove app from recents
         }
     }
 }

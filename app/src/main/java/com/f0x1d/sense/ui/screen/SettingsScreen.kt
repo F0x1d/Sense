@@ -41,13 +41,13 @@ fun SettingsScreen(navController: NavController) {
         ) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 SettingsTextField(
-                    value = apiKey ?: "",
+                    value = apiKey,
                     onValueChange = { viewModel.updateFor(viewModel.apiKey, it) },
                     labelResource = R.string.api_key
                 )
 
                 SettingsTextField(
-                    value = model ?: "",
+                    value = model,
                     onValueChange = { viewModel.updateFor(viewModel.model, it) },
                     labelResource = R.string.model
                 )
