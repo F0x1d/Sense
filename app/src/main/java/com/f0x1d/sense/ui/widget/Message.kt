@@ -62,7 +62,7 @@ fun Message(
         CompositionLocalProvider(LocalTextSelectionColors provides textSelectionsColors) {
             SelectionContainer {
                 Text(
-                    modifier = Modifier.messageBubble(message),
+                    modifier = it.messageBubble(message),
                     text = message.content ?: "",
                     color = if (message.fromUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -93,18 +93,11 @@ private fun BaseMessage(
     message: ChatMessage,
     needTitle: Boolean = true,
     actions: List<MessageAction> = emptyList(),
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.(Modifier) -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
-            ) { expanded = !expanded }
-    ) {
+    Row(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.size(if (message.fromUser) 20.dp else 5.dp))
 
         Column(
@@ -121,7 +114,12 @@ private fun BaseMessage(
                 Spacer(modifier = Modifier.size(3.dp))
             }
 
-            content()
+            content(
+                Modifier.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) { expanded = !expanded }
+            )
 
             if (actions.isNotEmpty()) {
                 AnimatedVisibility(

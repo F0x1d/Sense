@@ -13,10 +13,6 @@ class MainViewModel @Inject constructor(
     application: Application,
     private val settingsDataStore: SettingsDataStore
 ): BaseViewModel(application) {
-
-    val theme = settingsDataStore.theme
-    val amoled = settingsDataStore.amoled
-
     val shouldOpenSetup = settingsDataStore.apiKey.map {
         it == null
     }.distinctUntilChanged()

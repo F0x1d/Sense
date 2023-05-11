@@ -42,13 +42,7 @@ class MainActivity: ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val theme by viewModel.theme.collectAsStateWithLifecycle(initialValue = 0)
-            val amoled by viewModel.amoled.collectAsStateWithLifecycle(initialValue = false)
-
-            OpenAITheme(
-                theme = theme,
-                amoled = amoled
-            ) {
+            OpenAITheme {
                 Surface(modifier = Modifier.imePadding()) {
                     val openSetup by viewModel.shouldOpenSetup.collectAsStateWithLifecycle(initialValue = false)
 

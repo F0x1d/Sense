@@ -30,17 +30,10 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun OpenAITheme(
-    theme: Int = 0,
-    amoled: Boolean = false,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val darkTheme = when (theme) {
-        0 -> isSystemInDarkTheme()
-        1 -> false
-        else -> true
-    }
-
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -48,11 +41,6 @@ fun OpenAITheme(
         }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
-    }.run {
-        if (amoled && darkTheme) copy(
-            background = AmoledBackground,
-            surface = AmoledBackground
-        ) else this
     }
 
     val view = LocalView.current

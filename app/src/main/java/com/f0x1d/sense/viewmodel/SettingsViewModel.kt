@@ -22,9 +22,6 @@ class SettingsViewModel @Inject constructor(
     private val settingsDataStore: SettingsDataStore
 ): BaseViewModel(application) {
 
-    val theme = settingsDataStore.theme
-    val amoled = settingsDataStore.amoled
-
     val apiKey = mutableStateOf("")
     val model = mutableStateOf("")
 
@@ -58,14 +55,6 @@ class SettingsViewModel @Inject constructor(
                 actions[state]?.invoke(value)
             }
         }
-    }
-
-    fun selectTheme(value: Int) = viewModelScope.launch {
-        settingsDataStore.saveTheme(value)
-    }
-
-    fun selectAmoled(amoled: Boolean) = viewModelScope.launch {
-        settingsDataStore.saveAmoled(amoled)
     }
 
     private data class StateWithValue(
