@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.f0x1d.sense.OpenAIApplication
@@ -92,6 +93,10 @@ class ChatViewModel @AssistedInject constructor(
             markAllAsNotGeneratingInChat(chatId)
             deleteEmptyMessagesInChat(chatId)
         }
+    }
+
+    fun delete(message: ChatMessage) = viewModelScope.onIO {
+        database.messagesDao().delete(message)
     }
 }
 

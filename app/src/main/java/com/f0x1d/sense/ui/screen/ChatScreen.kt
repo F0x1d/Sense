@@ -1,6 +1,7 @@
 package com.f0x1d.sense.ui.screen
 
 import android.app.Activity
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,8 +45,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.f0x1d.sense.R
+import com.f0x1d.sense.database.entity.ChatMessage
+import com.f0x1d.sense.extensions.copyText
 import com.f0x1d.sense.ui.activity.ViewModelFactoryProvider
 import com.f0x1d.sense.ui.widget.Message
+import com.f0x1d.sense.ui.widget.MessageAction
 import com.f0x1d.sense.ui.widget.NavigationBackIcon
 import com.f0x1d.sense.ui.widget.TypingMessage
 import com.f0x1d.sense.viewmodel.ChatViewModel
@@ -111,7 +116,12 @@ fun ChatScreen(navController: NavController, chatId: Long) {
                     } else {
                         Message(
                             message = message,
-                            needTitle = needTitle
+                            needTitle = needTitle,
+                            actions = if (message.generating) emptyList() else generateMessageActions(
+                                context = LocalContext.current,
+                                message = message,
+                                viewModel = viewModel
+                            )
                         )
                     }
                 }
@@ -188,6 +198,27 @@ fun ChatScreen(navController: NavController, chatId: Long) {
             }
         }
     }
+}
+
+@Composable
+private fun generateMessageActions(
+    context: Context,
+    message: ChatMessage,
+    viewModel: ChatViewModel
+) = remember {
+    listOf(
+        MessageAction(
+            title = android.R.string.copy,
+            icon = R.drawable.ic_copy,
+            onClick = { context.copyText(message.content ?: "") }
+        ),
+        MessageAction(
+            title = R.string.delete,
+            icon = R.drawable.ic_delete_message,
+            tint = Color.Red,
+            onClick = { viewModel.delete(message) }
+        )
+    )
 }
 
 @Composable

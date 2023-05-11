@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.f0x1d.sense.model.Screen
+import com.f0x1d.sense.store.datastore.SettingsDataStore
 import com.f0x1d.sense.ui.screen.ChatScreen
 import com.f0x1d.sense.ui.screen.ChatsScreen
 import com.f0x1d.sense.ui.screen.PicturesScreen
@@ -41,7 +42,13 @@ class MainActivity: ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            OpenAITheme {
+            val theme by viewModel.theme.collectAsStateWithLifecycle(initialValue = 0)
+            val amoled by viewModel.amoled.collectAsStateWithLifecycle(initialValue = false)
+
+            OpenAITheme(
+                theme = theme,
+                amoled = amoled
+            ) {
                 Surface(modifier = Modifier.imePadding()) {
                     val openSetup by viewModel.shouldOpenSetup.collectAsStateWithLifecycle(initialValue = false)
 
@@ -91,4 +98,5 @@ class MainActivity: ComponentActivity() {
 @InstallIn(ActivityComponent::class)
 interface ViewModelFactoryProvider {
     fun chatViewModelFactory(): ChatViewModelAssistedFactory
+    fun settingsDataStore(): SettingsDataStore
 }

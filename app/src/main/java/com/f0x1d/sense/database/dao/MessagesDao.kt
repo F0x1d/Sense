@@ -1,6 +1,7 @@
 package com.f0x1d.sense.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -29,4 +30,7 @@ interface MessagesDao {
 
     @Query("DELETE FROM ChatMessage WHERE content is NULL")
     suspend fun deleteEmptyMessages()
+
+    @Delete
+    suspend fun delete(vararg messages: ChatMessage)
 }
