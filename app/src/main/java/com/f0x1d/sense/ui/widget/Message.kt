@@ -51,7 +51,7 @@ fun Message(
         message = message,
         needTitle = needTitle,
         actions = actions
-    ) {
+    ) { modifier, expanded ->
         val textSelectionsColors = if (message.fromChatGPT)
             LocalTextSelectionColors.current
         else TextSelectionColors(
@@ -60,15 +60,30 @@ fun Message(
         )
 
         CompositionLocalProvider(LocalTextSelectionColors provides textSelectionsColors) {
-            SelectionContainer {
-                Text(
-                    modifier = it.messageBubble(message),
-                    text = message.content ?: "",
-                    color = if (message.fromUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondaryContainer
+            if (!expanded) {
+                SelectionContainer { // maybe google will make internal SelectionContainer with access to selection public
+                    MessageText(
+                        modifier = modifier,
+                        message = message
+                    )
+                }
+            } else {
+                MessageText(
+                    modifier = modifier,
+                    message = message
                 )
             }
         }
     }
+}
+
+@Composable
+private fun MessageText(modifier: Modifier, message: ChatMessage) {
+    Text(
+        modifier = modifier.messageBubble(message),
+        text = message.content ?: "",
+        color = if (message.fromUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondaryContainer
+    )
 }
 
 @Composable
@@ -78,7 +93,7 @@ fun TypingMessage(needTitle: Boolean = true) {
     BaseMessage(
         message = message,
         needTitle = needTitle
-    ) {
+    ) { modifier, expanded ->
         PulsatingDots(
             modifier = Modifier
                 .messageBubble(message)
@@ -93,7 +108,7 @@ private fun BaseMessage(
     message: ChatMessage,
     needTitle: Boolean = true,
     actions: List<MessageAction> = emptyList(),
-    content: @Composable ColumnScope.(Modifier) -> Unit
+    content: @Composable ColumnScope.(Modifier, Boolean) -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
@@ -118,7 +133,8 @@ private fun BaseMessage(
                 Modifier.clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
-                ) { expanded = !expanded }
+                ) { expanded = !expanded },
+                expanded
             )
 
             if (actions.isNotEmpty()) {
@@ -128,7 +144,7 @@ private fun BaseMessage(
                     exit = shrinkVertically()
                 ) {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                        actions.forEach { ActionChip(messageAction = it) }
+                        actions.forEach { ActionChip(messageAction = it) { expanded = false } }
                     }
                 }
             }
@@ -139,11 +155,14 @@ private fun BaseMessage(
 }
 
 @Composable
-private fun ActionChip(messageAction: MessageAction) {
+private fun ActionChip(messageAction: MessageAction, onDismiss: () -> Unit) {
     val tint = messageAction.tint ?: MaterialTheme.colorScheme.primary
 
     AssistChip(
-        onClick = messageAction.onClick,
+        onClick = {
+            messageAction.onClick()
+            onDismiss()
+        },
         label = { Text(text = stringResource(id = messageAction.title)) },
         leadingIcon = {
             Icon(
