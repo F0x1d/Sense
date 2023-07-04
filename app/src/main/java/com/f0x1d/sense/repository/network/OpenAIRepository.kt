@@ -29,15 +29,6 @@ class OpenAIRepository @Inject constructor(
         GenerateImageRequestBody(prompt)
     ).data.first().url
 
-    @Deprecated("Use streaming API")
-    suspend fun generateMessages(messages: List<ChatMessage>) = openAIService.generateMessages(
-        GenerateMessagesRequestBody(
-            messages,
-            settingsDataStore.model.first(),
-            false
-        )
-    ).choices.map { it.message }
-
     suspend fun generateMessagesStream(messages: List<ChatMessage>) = flow {
         val response = openAIService.generateMessagesStream(
             GenerateMessagesRequestBody(
@@ -65,19 +56,17 @@ class OpenAIRepository @Inject constructor(
                 )
 
                 lineResponse.choices.firstOrNull()?.also { choice ->
-                    choice.delta?.also { delta ->
-                        if (delta.content != null) {
-                            var currentContent = contents[choice.index]
+                    choice.delta?.content?.takeIf { it.isNotEmpty() }?.also { content ->
+                        var currentContent = contents[choice.index]
 
-                            currentContent = if (currentContent == null)
-                                delta.content
-                            else
-                                currentContent + delta.content
+                        currentContent = if (currentContent == null)
+                            content
+                        else
+                            currentContent + content
 
-                            contents[choice.index] = currentContent
+                        contents[choice.index] = currentContent
 
-                            emit(choice.index to currentContent)
-                        }
+                        emit(choice.index to currentContent)
                     }
                 }
             }

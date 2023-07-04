@@ -19,7 +19,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.f0x1d.sense.model.Screen
-import com.f0x1d.sense.store.datastore.SettingsDataStore
 import com.f0x1d.sense.ui.screen.ChatScreen
 import com.f0x1d.sense.ui.screen.ChatsScreen
 import com.f0x1d.sense.ui.screen.PicturesScreen
@@ -108,5 +107,4 @@ class MainActivity: ComponentActivity() {
 @InstallIn(ActivityComponent::class)
 interface ViewModelFactoryProvider {
     fun chatViewModelFactory(): ChatViewModelAssistedFactory
-    fun settingsDataStore(): SettingsDataStore
 }
