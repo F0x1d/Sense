@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
-class OpenAIApplication: Application() {
+class SenseApplication: Application() {
 
     companion object {
         val applicationScope = MainScope()

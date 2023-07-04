@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.f0x1d.sense.OpenAIApplication
+import com.f0x1d.sense.SenseApplication
 import com.f0x1d.sense.database.AppDatabase
 import com.f0x1d.sense.database.entity.ChatMessage
 import com.f0x1d.sense.database.entity.ChatWithMessages
@@ -40,7 +40,7 @@ class ChatViewModel @AssistedInject constructor(
     var text by mutableStateOf("")
     var addingMyMessage by mutableStateOf(false)
 
-    fun send(chatWithMessages: ChatWithMessages) = OpenAIApplication.applicationScope.onIO({
+    fun send(chatWithMessages: ChatWithMessages) = SenseApplication.applicationScope.onIO({
         if (database.messagesDao().countGeneratingMessagesInChat(chatId) > 0) return@onIO
 
         val messageText = text.trim()
