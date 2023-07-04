@@ -26,4 +26,6 @@
     <string name="instruction_part_3">Нажмите \"View API Keys\"</string>
     <string name="instruction_part_4">Нажмите \"Create new secret key\"</string>
     <string name="instruction_part_5">Скопируйте его и вставьте ниже</string>
+
+    <string name="error">Ошибка</string>
 </resources>

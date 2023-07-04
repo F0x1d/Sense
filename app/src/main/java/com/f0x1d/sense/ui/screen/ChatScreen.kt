@@ -48,6 +48,7 @@ import com.f0x1d.sense.R
 import com.f0x1d.sense.database.entity.ChatMessage
 import com.f0x1d.sense.extensions.copyText
 import com.f0x1d.sense.ui.activity.ViewModelFactoryProvider
+import com.f0x1d.sense.ui.widget.ErrorAlertDialog
 import com.f0x1d.sense.ui.widget.Message
 import com.f0x1d.sense.ui.widget.MessageAction
 import com.f0x1d.sense.ui.widget.NavigationBackIcon
@@ -197,6 +198,8 @@ fun ChatScreen(navController: NavController, chatId: Long) {
                 )
             }
         }
+
+        ErrorAlertDialog(viewModel = viewModel)
     }
 }
 

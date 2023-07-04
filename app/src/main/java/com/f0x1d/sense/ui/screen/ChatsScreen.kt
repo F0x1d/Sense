@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -21,6 +20,7 @@ import com.f0x1d.sense.R
 import com.f0x1d.sense.extensions.openLink
 import com.f0x1d.sense.model.Screen
 import com.f0x1d.sense.ui.widget.Chat
+import com.f0x1d.sense.ui.widget.ErrorAlertDialog
 import com.f0x1d.sense.viewmodel.ChatsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,14 +32,12 @@ fun ChatsScreen(navController: NavController) {
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
-    var infoDialogOpened by rememberSaveable { mutableStateOf(false) }
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             LargeTopAppBar(
                 title = { Text(text = stringResource(id = R.string.chats)) },
                 actions = {
-                    IconButton(onClick = { infoDialogOpened = true }) {
+                    IconButton(onClick = { viewModel.infoDialogOpened = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_info),
                             contentDescription = null
@@ -102,9 +100,11 @@ fun ChatsScreen(navController: NavController) {
             )
         }
 
-        InfoDialog(opened = infoDialogOpened) {
-            infoDialogOpened = false
+        InfoDialog(opened = viewModel.infoDialogOpened) {
+            viewModel.infoDialogOpened = false
         }
+        
+        ErrorAlertDialog(viewModel = viewModel)
     }
 }
 

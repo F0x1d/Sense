@@ -31,4 +31,6 @@
     <string name="instruction_part_3">Tap \"View API Keys\"</string>
     <string name="instruction_part_4">Tap \"Create new secret key\"</string>
     <string name="instruction_part_5">Copy it and paste below</string>
+
+    <string name="error">Error</string>
 </resources>

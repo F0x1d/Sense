@@ -39,6 +39,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.f0x1d.sense.R
+import com.f0x1d.sense.ui.widget.ErrorAlertDialog
 import com.f0x1d.sense.ui.widget.NavigationBackIcon
 import com.f0x1d.sense.viewmodel.PicturesViewModel
 
@@ -128,6 +129,8 @@ fun PicturesScreen(navController: NavController) {
                 }
             }
         }
+
+        ErrorAlertDialog(viewModel = viewModel)
     }
 }
 

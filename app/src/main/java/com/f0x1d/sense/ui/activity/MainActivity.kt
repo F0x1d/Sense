@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
@@ -56,7 +58,11 @@ class MainActivity: ComponentActivity() {
                                 navController = navController,
                                 startDestination = Screen.Chats.route
                             ) {
-                                composable(Screen.Chats.route) {
+                                composable(
+                                    route = Screen.Chats.route,
+                                    enterTransition = { fadeIn() },
+                                    exitTransition = { fadeOut() }
+                                ) {
                                     ChatsScreen(navController = navController)
                                 }
 
@@ -64,7 +70,9 @@ class MainActivity: ComponentActivity() {
                                     route = "${Screen.Chat.route}/{id}",
                                     arguments = listOf(
                                         navArgument("id") { type = NavType.LongType }
-                                    )
+                                    ),
+                                    enterTransition = { fadeIn() },
+                                    exitTransition = { fadeOut() }
                                 ) {
                                     ChatScreen(
                                         navController = navController,
@@ -72,11 +80,19 @@ class MainActivity: ComponentActivity() {
                                     )
                                 }
 
-                                composable(Screen.Pictures.route) {
+                                composable(
+                                    route = Screen.Pictures.route,
+                                    enterTransition = { fadeIn() },
+                                    exitTransition = { fadeOut() }
+                                ) {
                                     PicturesScreen(navController = navController)
                                 }
 
-                                composable(Screen.Settings.route) {
+                                composable(
+                                    route = Screen.Settings.route,
+                                    enterTransition = { fadeIn() },
+                                    exitTransition = { fadeOut() }
+                                ) {
                                     SettingsScreen(navController = navController)
                                 }
                             }

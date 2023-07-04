@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.f0x1d.sense.R
 import com.f0x1d.sense.extensions.openLink
+import com.f0x1d.sense.ui.widget.ErrorAlertDialog
 import com.f0x1d.sense.viewmodel.SetupViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -130,6 +131,8 @@ fun SetupScreen() {
                 }
             }
         }
+        
+        ErrorAlertDialog(viewModel = viewModel)
     }
 }
 

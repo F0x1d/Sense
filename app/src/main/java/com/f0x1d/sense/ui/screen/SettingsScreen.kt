@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.f0x1d.sense.R
+import com.f0x1d.sense.ui.widget.ErrorAlertDialog
 import com.f0x1d.sense.ui.widget.NavigationBackIcon
 import com.f0x1d.sense.viewmodel.SettingsViewModel
 
@@ -74,6 +75,8 @@ fun SettingsScreen(navController: NavController) {
                 )
             }
         }
+        
+        ErrorAlertDialog(viewModel = viewModel)
     }
 }
 
