@@ -33,4 +33,5 @@
     <string name="instruction_part_5">Copy it and paste below</string>
 
     <string name="error">Error</string>
+    <string name="endpoint">Endpoint</string>
 </resources>

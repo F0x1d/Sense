@@ -1,4 +1,4 @@
-package com.f0x1d.sense.repository.network.service
+package com.f0x1d.sense.repository.network.interceptor
 
 import com.f0x1d.sense.store.datastore.SettingsDataStore
 import kotlinx.coroutines.flow.first

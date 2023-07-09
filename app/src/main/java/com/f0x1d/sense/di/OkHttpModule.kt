@@ -1,6 +1,7 @@
 package com.f0x1d.sense.di
 
-import com.f0x1d.sense.repository.network.service.AuthenticationInterceptor
+import com.f0x1d.sense.repository.network.interceptor.AuthenticationInterceptor
+import com.f0x1d.sense.repository.network.interceptor.ChangeEndpointInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +16,12 @@ object OkHttpModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authenticationInterceptor: AuthenticationInterceptor) = OkHttpClient.Builder()
+    fun provideOkHttpClient(
+        authenticationInterceptor: AuthenticationInterceptor,
+        changeEndpointInterceptor: ChangeEndpointInterceptor
+    ) = OkHttpClient.Builder()
         .addInterceptor(authenticationInterceptor)
+        .addInterceptor(changeEndpointInterceptor)
         .readTimeout(2, TimeUnit.MINUTES)
         .build()
 }

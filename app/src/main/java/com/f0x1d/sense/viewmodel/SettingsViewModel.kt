@@ -22,6 +22,7 @@ class SettingsViewModel @Inject constructor(
     private val settingsDataStore: SettingsDataStore
 ): BaseViewModel(application) {
 
+    val endpoint = mutableStateOf("")
     val apiKey = mutableStateOf("")
     val model = mutableStateOf("")
 
@@ -30,9 +31,11 @@ class SettingsViewModel @Inject constructor(
     private val actions = mutableMapOf<MutableState<String>, suspend (String) -> Unit>()
 
     init {
+        fillings[endpoint] = { settingsDataStore.endpoint.first() }
         fillings[apiKey] = { settingsDataStore.apiKey.first() }
         fillings[model] = { settingsDataStore.model.first() }
 
+        actions[endpoint] = { settingsDataStore.saveEndpoint(it) }
         actions[apiKey] = { settingsDataStore.saveApiKey(it) }
         actions[model] = { settingsDataStore.saveModel(it) }
 

@@ -36,6 +36,7 @@ import com.f0x1d.sense.viewmodel.SettingsViewModel
 fun SettingsScreen(navController: NavController) {
     val viewModel = hiltViewModel<SettingsViewModel>()
 
+    val endpoint by viewModel.endpoint
     val apiKey by viewModel.apiKey
     val model by viewModel.model
 
@@ -59,7 +60,15 @@ fun SettingsScreen(navController: NavController) {
                     .padding(horizontal = 10.dp)
             ) {
                 Spacer(modifier = Modifier.size(10.dp))
-                
+
+                SettingsTextField(
+                    value = endpoint,
+                    onValueChange = { viewModel.updateFor(viewModel.endpoint, it) },
+                    labelResource = R.string.endpoint
+                )
+
+                Spacer(modifier = Modifier.size(10.dp))
+
                 SettingsTextField(
                     value = apiKey,
                     onValueChange = { viewModel.updateFor(viewModel.apiKey, it) },

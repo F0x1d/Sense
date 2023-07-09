@@ -12,6 +12,8 @@ import javax.inject.Inject
 class SenseApplication: Application() {
 
     companion object {
+        const val API_ENDPOINT = "api.openai.com/v1"
+
         val applicationScope = MainScope()
     }
 

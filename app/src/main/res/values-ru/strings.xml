@@ -28,4 +28,5 @@
     <string name="instruction_part_5">Скопируйте его и вставьте ниже</string>
 
     <string name="error">Ошибка</string>
+    <string name="endpoint">Эндпоинт</string>
 </resources>

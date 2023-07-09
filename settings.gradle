@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven { url "https://jitpack.io" }
     }
 }
-rootProject.name = "OpenAI"
+rootProject.name = "Sense"
 include ':app'

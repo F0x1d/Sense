@@ -18,7 +18,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideOpenAIService(client: OkHttpClient, gson: Gson) = Retrofit.Builder()
-        .baseUrl("https://api.openai.com/v1/")
+        .baseUrl("https://google.com/") // it is always modified in ChangeEndpointInterceptor.kt
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
