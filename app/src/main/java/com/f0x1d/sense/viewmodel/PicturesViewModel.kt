@@ -57,4 +57,8 @@ class PicturesViewModel @Inject constructor(
         ctx.downloadManager.enqueue(request)
         ctx.toast(R.string.download_started)
     }
+
+    fun delete(image: GeneratedImage) = viewModelScope.onIO {
+        database.imagesDao().delete(image)
+    }
 }

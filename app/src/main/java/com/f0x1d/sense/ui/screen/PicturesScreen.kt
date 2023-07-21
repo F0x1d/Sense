@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -138,15 +139,26 @@ fun PicturesScreen(navController: NavController) {
                                         modifier = Modifier.padding(horizontal = 10.dp)
                                     )
 
-                                    IconButton(
+                                    Row(
                                         modifier = Modifier.padding(top = 10.dp),
-                                        onClick = { viewModel.download(image.url) }
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceEvenly
                                     ) {
-                                        Icon(
-                                            painter = painterResource(id = R.drawable.ic_download),
-                                            tint = MaterialTheme.colorScheme.primary,
-                                            contentDescription = null
-                                        )
+                                        IconButton(onClick = { viewModel.delete(image) }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_delete),
+                                                tint = MaterialTheme.colorScheme.error,
+                                                contentDescription = null
+                                            )
+                                        }
+
+                                        IconButton(onClick = { viewModel.download(image.url) }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_download),
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                contentDescription = null
+                                            )
+                                        }
                                     }
                                 }
                             }
