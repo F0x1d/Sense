@@ -1,5 +1,7 @@
 package com.f0x1d.sense.ui.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -152,7 +154,13 @@ fun PicturesScreen(navController: NavController) {
                                             )
                                         }
 
-                                        IconButton(onClick = { viewModel.download(image.url) }) {
+                                        val saveImageLauncher = rememberLauncherForActivityResult(
+                                            contract = ActivityResultContracts.CreateDocument("image/jpeg")
+                                        ) {
+                                            viewModel.save(image.url, it)
+                                        }
+
+                                        IconButton(onClick = { saveImageLauncher.launch("image.jpeg") }) {
                                             Icon(
                                                 painter = painterResource(id = R.drawable.ic_download),
                                                 tint = MaterialTheme.colorScheme.primary,
