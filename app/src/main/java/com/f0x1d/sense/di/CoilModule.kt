@@ -1,8 +1,8 @@
 package com.f0x1d.sense.di
 
 import android.content.Context
-import androidx.room.Room
-import com.f0x1d.sense.database.AppDatabase
+import coil.ImageLoader
+import coil.request.CachePolicy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,15 +12,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RoomModule {
+object CoilModule {
 
     @Provides
     @Singleton
-    fun provideRoomDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        "chats"
-    )
-        .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
+    fun provideImageLoader(@ApplicationContext context: Context) = ImageLoader.Builder(context)
+        .memoryCachePolicy(CachePolicy.ENABLED)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .respectCacheHeaders(false)
         .build()
 }
