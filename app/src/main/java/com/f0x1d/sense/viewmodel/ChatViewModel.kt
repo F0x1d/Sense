@@ -16,7 +16,10 @@ import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ChatViewModel @AssistedInject constructor(
     application: Application,
@@ -35,7 +38,7 @@ class ChatViewModel @AssistedInject constructor(
 
     val chatWithMessages = database.chatsDao().getById(chatId).map {
         it.copy(messages = it.messages.asReversed())
-    }
+    }.flowOn(Dispatchers.IO)
 
     var text by mutableStateOf("")
     var addingMyMessage by mutableStateOf(false)
@@ -46,14 +49,16 @@ class ChatViewModel @AssistedInject constructor(
         val messageText = text.trim()
         if (messageText.isEmpty()) return@onIO
 
-        addingMyMessage = true
-
         val userMessage = ChatMessage(
             content = messageText,
             role = "user",
             chatId = chatId
         )
-        text = ""
+
+        withContext(Dispatchers.Main) {
+            addingMyMessage = true
+            text = ""
+        }
 
         chatWithMessages.chat.also { chat ->
             if (chat.title == null) {
@@ -88,12 +93,12 @@ class ChatViewModel @AssistedInject constructor(
         database.messagesDao().insert(
             responseMessages.values.map { it.copy(generating = false) }
         )
-    }) {
+    }, errorBlock = {
         database.messagesDao().apply {
             markAllAsNotGeneratingInChat(chatId)
             deleteEmptyMessagesInChat(chatId)
         }
-    }
+    })
 
     fun delete(message: ChatMessage) = viewModelScope.onIO {
         database.messagesDao().delete(message)

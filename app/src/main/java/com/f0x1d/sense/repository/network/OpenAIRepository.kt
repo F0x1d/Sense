@@ -41,9 +41,9 @@ class OpenAIRepository @Inject constructor(
             throw HttpException(response)
         }
 
-        val reader = response.body()?.byteStream()?.bufferedReader() ?: throw Exception("null stream")
-        try {
+        response.body()?.byteStream()?.bufferedReader()?.use { reader ->
             val contents = mutableMapOf<Int, String>()
+
             while (currentCoroutineContext().isActive) {
                 val line = reader.readLine() ?: continue
                 if (line.isEmpty()) continue
@@ -70,10 +70,6 @@ class OpenAIRepository @Inject constructor(
                     }
                 }
             }
-        } catch (e: Exception) {
-            throw e
-        } finally {
-            reader.close()
         }
     }.flowOn(Dispatchers.IO)
 }

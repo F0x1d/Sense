@@ -10,6 +10,7 @@ import com.f0x1d.sense.database.entity.Chat
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class ChatsViewModel @Inject constructor(
         it.sortedByDescending { chatWithMessages ->
             chatWithMessages.messages.lastOrNull()?.time ?: chatWithMessages.chat.createdTime
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     fun createChat(onCreated: (Chat) -> Unit) = viewModelScope.onIO {
         val chat = Chat().run {

@@ -28,7 +28,7 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
 
     protected fun CoroutineScope.onIO(
         block: suspend CoroutineScope.() -> Unit,
-        error: suspend CoroutineScope.() -> Unit
+        errorBlock: suspend CoroutineScope.() -> Unit
     ) = launch(Dispatchers.IO) {
         try {
             coroutineScope {
@@ -38,7 +38,7 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
             e.printStackTrace()
 
             handleNetworkError(e)
-            error.invoke(this)
+            errorBlock.invoke(this)
         }
     }
 

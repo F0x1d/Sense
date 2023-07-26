@@ -47,7 +47,7 @@ class MainActivity: ComponentActivity() {
                 Surface(modifier = Modifier.imePadding()) {
                     val openSetup by viewModel.shouldOpenSetup.collectAsStateWithLifecycle(initialValue = false)
 
-                    Crossfade(targetState = openSetup) {
+                    Crossfade(targetState = openSetup, label = "Setup") {
                         if (it) {
                             SetupScreen()
                         } else {

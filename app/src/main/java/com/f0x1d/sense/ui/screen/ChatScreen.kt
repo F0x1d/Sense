@@ -151,11 +151,9 @@ fun ChatScreen(navController: NavController, chatId: Long) {
             }
         }
 
-        if (chatWithMessages?.messages != null) {
-            LaunchedEffect(chatWithMessages!!.messages.size) {
-                chatWithMessages?.messages?.also { messages ->
-                    lazyListState.animateScrollToItem(0)
-                }
+        chatWithMessages?.messages?.also { messages ->
+            LaunchedEffect(messages.size) {
+                lazyListState.animateScrollToItem(0)
                 viewModel.addingMyMessage = false
             }
         }

@@ -13,8 +13,11 @@ import com.f0x1d.sense.database.entity.GeneratedImage
 import com.f0x1d.sense.repository.network.OpenAIRepository
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,19 +33,25 @@ class PicturesViewModel @Inject constructor(
 
     val generatedImages = database.imagesDao().getAll().map {
         it.asReversed()
-    }.distinctUntilChanged()
+    }
+        .flowOn(Dispatchers.IO)
+        .distinctUntilChanged()
 
     fun generate() = viewModelScope.onIO({
         query.trim().also { query ->
             if (query.isEmpty()) return@onIO
 
-            loading = true
+            withContext(Dispatchers.Main) {
+                loading = true
+            }
             val imageUrl = openAIRepository.generateImage(query)
-            loading = false
 
+            withContext(Dispatchers.Main) {
+                loading = false
+            }
             database.imagesDao().insert(GeneratedImage(query, imageUrl))
         }
-    }) { loading = false }
+    }, errorBlock = { loading = false })
 
     @OptIn(ExperimentalCoilApi::class)
     fun save(url: String?, uri: Uri?) = viewModelScope.onIO {

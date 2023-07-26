@@ -32,6 +32,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -109,11 +110,16 @@ fun PicturesScreen(navController: NavController) {
                     images,
                     key = { it.id }
                 ) { image ->
-                    val imageRequest = ImageRequest.Builder(LocalContext.current)
-                        .data(image.url)
-                        .transformations(RoundedCornersTransformation(with(LocalDensity.current) { 12.dp.toPx() }))
-                        .crossfade(true)
-                        .build()
+                    val context = LocalContext.current
+                    val density = LocalDensity.current
+
+                    val imageRequest = remember {
+                        ImageRequest.Builder(context)
+                            .data(image.url)
+                            .transformations(RoundedCornersTransformation(with(density) { 12.dp.toPx() }))
+                            .crossfade(true)
+                            .build()
+                    }
 
                     SubcomposeAsyncImage(
                         modifier = Modifier.animateItemPlacement(),

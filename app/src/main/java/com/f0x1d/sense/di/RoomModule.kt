@@ -16,11 +16,8 @@ object RoomModule {
 
     @Provides
     @Singleton
-    fun provideRoomDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        "chats"
-    )
+    fun provideRoomDatabase(@ApplicationContext context: Context) = Room
+        .databaseBuilder(context, AppDatabase::class.java, "chats")
         .addMigrations(AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3)
         .build()
 }

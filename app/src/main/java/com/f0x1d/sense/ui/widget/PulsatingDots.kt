@@ -50,7 +50,7 @@ private fun PulsatingDot(modifier: Modifier = Modifier, offsetMillis: Int = 0) {
 
 @Composable
 private fun Pulsating(offsetMillis: Int, pulseFraction: Float = 1.2f, content: @Composable () -> Unit) {
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "Pulsation transition")
 
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
@@ -59,7 +59,8 @@ private fun Pulsating(offsetMillis: Int, pulseFraction: Float = 1.2f, content: @
             animation = tween(500),
             repeatMode = RepeatMode.Reverse,
             initialStartOffset = StartOffset(offsetMillis, StartOffsetType.Delay)
-        )
+        ),
+        label = "Pulsation"
     )
 
     Box(modifier = Modifier.scale(scale)) {
