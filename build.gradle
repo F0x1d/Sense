@@ -1,23 +1,44 @@
 buildscript {
     ext {
-        kotlin_version = '1.8.21'
+        agp_version = '8.1.0'
+        kotlin_version = '1.9.0'
+        ksp_version = '1.9.0-1.0.12'
+
+        coil_version = '2.4.0'
+
+        room_version = '2.5.2'
+        gson_version = '2.10.1'
+        retrofit_version = '2.9.0'
+        okhttp_version = '4.10.0'
+        hilt_version = '2.47'
+        hilt_navigation_version = '1.1.0-alpha01'
+
+        androidx_core_version = '1.12.0-beta01'
+        androidx_collection_version = '1.2.0'
+        androidx_lifecycle_version = '2.6.1'
+        androidx_activity_version = '1.7.2'
+        androidx_datastore_version = '1.1.0-alpha04'
+
+        material3_version = '1.2.0-alpha04'
         compose_version = '1.6.0-alpha02'
-        nav_version = '2.7.0-beta02'
-        room_version = "2.5.2"
+
+        navigation_version = '2.7.0-rc01'
+
+        junit_version = '4.13.2'
+        androidx_junit_version = '1.1.5'
+        androidx_espresso_version = '3.5.1'
     }
 
     dependencies {
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.45'
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.6.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-    repositories {
-        mavenCentral()
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
     }
 }
 
 plugins {
-    id 'com.android.application' version '8.1.0' apply false
-    id 'com.android.library' version '8.1.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
+    id 'com.android.application' version "$agp_version" apply false
+    id 'com.android.library' version "$agp_version" apply false
+    id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
+
+    id 'com.google.devtools.ksp' version "$ksp_version" apply false
+    id 'com.google.dagger.hilt.android' version "$hilt_version" apply false
 }
