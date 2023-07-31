@@ -10,9 +10,9 @@ plugins {
 }
 
 android {
-    namespace 'com.f0x1d.sense'
     compileSdk 34
 
+    namespace 'com.f0x1d.sense'
     defaultConfig {
         applicationId "com.f0x1d.sense"
         minSdk 23

@@ -31,11 +31,10 @@ class PicturesViewModel @Inject constructor(
     var query by mutableStateOf("")
     var loading by mutableStateOf(false)
 
-    val generatedImages = database.imagesDao().getAll().map {
-        it.asReversed()
-    }
-        .flowOn(Dispatchers.IO)
+    val generatedImages = database.imagesDao().getAll()
+        .map { it.asReversed() }
         .distinctUntilChanged()
+        .flowOn(Dispatchers.IO)
 
     fun generate() = viewModelScope.onIO({
         query.trim().also { query ->

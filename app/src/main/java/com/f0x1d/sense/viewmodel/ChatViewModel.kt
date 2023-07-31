@@ -36,9 +36,9 @@ class ChatViewModel @AssistedInject constructor(
         }
     }
 
-    val chatWithMessages = database.chatsDao().getById(chatId).map {
-        it.copy(messages = it.messages.asReversed())
-    }.flowOn(Dispatchers.IO)
+    val chatWithMessages = database.chatsDao().getById(chatId)
+        .map { it.copy(messages = it.messages.asReversed()) }
+        .flowOn(Dispatchers.IO)
 
     var text by mutableStateOf("")
     var addingMyMessage by mutableStateOf(false)
@@ -91,7 +91,7 @@ class ChatViewModel @AssistedInject constructor(
         }
 
         database.messagesDao().insert(
-            responseMessages.values.map { it.copy(generating = false) }
+            responseMessages.values.map { it.copy(generating = false, content = it.content?.trim()) }
         )
     }, errorBlock = {
         database.messagesDao().apply {

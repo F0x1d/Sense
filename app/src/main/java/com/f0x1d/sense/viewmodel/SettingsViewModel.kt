@@ -53,7 +53,7 @@ class SettingsViewModel @Inject constructor(
     fun updateFor(state: MutableState<String>, value: String) {
         state.value = value
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             mutexes.getOrPut(state) { Mutex() }.withLock {
                 actions[state]?.invoke(value)
             }
