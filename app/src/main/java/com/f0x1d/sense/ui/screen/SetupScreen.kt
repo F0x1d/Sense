@@ -149,7 +149,8 @@ fun InstructionPart(index: Int, instruction: AnnotatedString) {
             top = 10.dp,
             end = 15.dp,
             bottom = 10.dp
-        )
+        ),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = "${index + 1}.",

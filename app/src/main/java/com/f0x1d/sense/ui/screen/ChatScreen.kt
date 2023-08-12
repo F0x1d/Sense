@@ -19,9 +19,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SmallFloatingActionButton
@@ -89,7 +89,7 @@ fun ChatScreen(navController: NavController, chatId: Long) {
         )
 
         AnimatedVisibility(visible = lazyListState.canScrollForward) {
-            Divider()
+            HorizontalDivider()
         }
 
         Box(modifier = Modifier.weight(1f)) {
@@ -159,7 +159,7 @@ fun ChatScreen(navController: NavController, chatId: Long) {
         }
 
         AnimatedVisibility(visible = lazyListState.canScrollBackward) {
-            Divider()
+            HorizontalDivider()
         }
 
         Row(
@@ -224,10 +224,13 @@ private fun generateMessageActions(
 
 @Composable
 fun chatViewModel(chatId: Long): ChatViewModel {
-    val factory = EntryPointAccessors.fromActivity(
-        LocalContext.current as Activity,
-        ViewModelFactoryProvider::class.java
-    ).chatViewModelFactory()
+    val context = LocalContext.current
+    val factory = remember {
+        EntryPointAccessors.fromActivity(
+            context as Activity,
+            ViewModelFactoryProvider::class.java
+        ).chatViewModelFactory()
+    }
 
     return viewModel(factory = ChatViewModel.provideFactory(factory, chatId))
 }

@@ -13,7 +13,7 @@ buildscript {
         hilt_version = '2.47'
         hilt_navigation_version = '1.1.0-alpha01'
 
-        androidx_core_version = '1.12.0-beta01'
+        androidx_core_version = '1.12.0-rc01'
         androidx_collection_version = '1.2.0'
         androidx_lifecycle_version = '2.6.1'
         androidx_activity_version = '1.7.2'
@@ -22,7 +22,7 @@ buildscript {
         material3_version = '1.2.0-alpha04'
         compose_version = '1.6.0-alpha02'
 
-        navigation_version = '2.7.0-rc01'
+        navigation_version = '2.7.0'
 
         junit_version = '4.13.2'
         androidx_junit_version = '1.1.5'
