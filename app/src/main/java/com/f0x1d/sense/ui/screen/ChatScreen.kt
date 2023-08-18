@@ -1,6 +1,5 @@
 package com.f0x1d.sense.ui.screen
 
-import android.app.Activity
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -41,26 +40,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.f0x1d.sense.R
 import com.f0x1d.sense.database.entity.ChatMessage
 import com.f0x1d.sense.extensions.copyText
-import com.f0x1d.sense.ui.activity.ViewModelFactoryProvider
 import com.f0x1d.sense.ui.widget.ErrorAlertDialog
 import com.f0x1d.sense.ui.widget.Message
 import com.f0x1d.sense.ui.widget.MessageAction
 import com.f0x1d.sense.ui.widget.NavigationBackIcon
 import com.f0x1d.sense.ui.widget.TypingMessage
 import com.f0x1d.sense.viewmodel.ChatViewModel
-import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun ChatScreen(navController: NavController, chatId: Long) {
-    val viewModel = chatViewModel(chatId = chatId)
+fun ChatScreen(navController: NavController) {
+    val viewModel = hiltViewModel<ChatViewModel>()
 
     val chatWithMessages by viewModel.chatWithMessages.collectAsStateWithLifecycle(initialValue = null)
 
@@ -220,17 +217,4 @@ private fun generateMessageActions(
             onClick = { viewModel.delete(message) }
         )
     )
-}
-
-@Composable
-fun chatViewModel(chatId: Long): ChatViewModel {
-    val context = LocalContext.current
-    val factory = remember {
-        EntryPointAccessors.fromActivity(
-            context as Activity,
-            ViewModelFactoryProvider::class.java
-        ).chatViewModelFactory()
-    }
-
-    return viewModel(factory = ChatViewModel.provideFactory(factory, chatId))
 }

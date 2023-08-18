@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SetupViewModel @Inject constructor(
-    application: Application,
-    private val settingsDataStore: SettingsDataStore
+    private val settingsDataStore: SettingsDataStore,
+    application: Application
 ): BaseViewModel(application) {
 
     var apiKey by mutableStateOf("")

@@ -5,36 +5,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.f0x1d.sense.SenseApplication
 import com.f0x1d.sense.database.AppDatabase
 import com.f0x1d.sense.database.entity.ChatMessage
 import com.f0x1d.sense.database.entity.ChatWithMessages
+import com.f0x1d.sense.di.viewmodel.ChatId
 import com.f0x1d.sense.repository.network.OpenAIRepository
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ChatViewModel @AssistedInject constructor(
-    application: Application,
+@HiltViewModel
+class ChatViewModel @Inject constructor(
+    @ChatId private val chatId: Long,
     private val database: AppDatabase,
     private val openAIRepository: OpenAIRepository,
-    @Assisted private val chatId: Long
+    application: Application
 ): BaseViewModel(application) {
-
-    companion object {
-        fun provideFactory(assistedFactory: ChatViewModelAssistedFactory, chatId: Long) = viewModelFactory {
-            initializer {
-                assistedFactory.create(chatId)
-            }
-        }
-    }
 
     val chatWithMessages = database.chatsDao().getById(chatId)
         .map { it.copy(messages = it.messages.asReversed()) }
@@ -103,9 +94,4 @@ class ChatViewModel @AssistedInject constructor(
     fun delete(message: ChatMessage) = viewModelScope.onIO {
         database.messagesDao().delete(message)
     }
-}
-
-@AssistedFactory
-interface ChatViewModelAssistedFactory {
-    fun create(@Assisted chatId: Long): ChatViewModel
 }

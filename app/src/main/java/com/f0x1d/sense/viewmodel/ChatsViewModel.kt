@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatsViewModel @Inject constructor(
-    application: Application,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    application: Application
 ): BaseViewModel(application) {
 
     var infoDialogOpened by mutableStateOf(false)

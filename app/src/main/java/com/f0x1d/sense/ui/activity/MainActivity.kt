@@ -25,12 +25,8 @@ import com.f0x1d.sense.ui.screen.PicturesScreen
 import com.f0x1d.sense.ui.screen.SettingsScreen
 import com.f0x1d.sense.ui.screen.SetupScreen
 import com.f0x1d.sense.ui.theme.OpenAITheme
-import com.f0x1d.sense.viewmodel.ChatViewModelAssistedFactory
 import com.f0x1d.sense.viewmodel.MainViewModel
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.components.ActivityComponent
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
@@ -73,10 +69,7 @@ class MainActivity: ComponentActivity() {
                                     enterTransition = { fadeIn() },
                                     exitTransition = { fadeOut() }
                                 ) {
-                                    ChatScreen(
-                                        navController = navController,
-                                        chatId = it.arguments?.getLong("id")!!
-                                    )
+                                    ChatScreen(navController = navController)
                                 }
 
                                 composable(
@@ -101,10 +94,4 @@ class MainActivity: ComponentActivity() {
             }
         }
     }
-}
-
-@EntryPoint
-@InstallIn(ActivityComponent::class)
-interface ViewModelFactoryProvider {
-    fun chatViewModelFactory(): ChatViewModelAssistedFactory
 }

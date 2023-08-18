@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    application: Application,
-    private val settingsDataStore: SettingsDataStore
+    private val settingsDataStore: SettingsDataStore,
+    application: Application
 ): BaseViewModel(application) {
     val shouldOpenSetup = settingsDataStore.apiKey
         .map { it == null }

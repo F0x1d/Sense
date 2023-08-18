@@ -22,10 +22,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PicturesViewModel @Inject constructor(
-    application: Application,
     private val openAIRepository: OpenAIRepository,
     private val database: AppDatabase,
-    val imageLoader: ImageLoader
+    val imageLoader: ImageLoader,
+    application: Application
 ): BaseViewModel(application) {
 
     var query by mutableStateOf("")
