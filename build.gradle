@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        agp_version = '8.1.0'
+        agp_version = '8.1.1'
         kotlin_version = '1.9.0'
         ksp_version = '1.9.0-1.0.12'
 
@@ -13,16 +13,16 @@ buildscript {
         hilt_version = '2.47'
         hilt_navigation_version = '1.1.0-alpha01'
 
-        androidx_core_version = '1.12.0-rc01'
+        androidx_core_version = '1.12.0'
         androidx_collection_version = '1.2.0'
-        androidx_lifecycle_version = '2.6.1'
+        androidx_lifecycle_version = '2.6.2'
         androidx_activity_version = '1.7.2'
         androidx_datastore_version = '1.1.0-alpha04'
 
         material3_version = '1.2.0-alpha04'
-        compose_version = '1.6.0-alpha02'
+        compose_version = '1.6.0-alpha05'
 
-        navigation_version = '2.7.0'
+        navigation_version = '2.7.2'
 
         junit_version = '4.13.2'
         androidx_junit_version = '1.1.5'
