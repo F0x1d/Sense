@@ -54,7 +54,7 @@ class PicturesViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoilApi::class)
     fun save(url: String?, uri: Uri?) = viewModelScope.onIO {
-        imageLoader.diskCache?.get(url ?: return@onIO)?.use { snapshot ->
+        imageLoader.diskCache?.openSnapshot(url ?: return@onIO)?.use { snapshot ->
             snapshot.data.toFile().inputStream().use { inputStream ->
                 ctx.contentResolver.openOutputStream(uri ?: return@onIO)?.use { outputStream ->
                     inputStream.copyTo(outputStream)

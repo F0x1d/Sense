@@ -1,6 +1,5 @@
 package com.f0x1d.sense.ui.screen
 
-import android.content.Context
 import android.util.TypedValue
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -14,7 +13,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -141,7 +139,7 @@ fun InstructionPart(index: Int, instruction: AnnotatedString) {
     val context = LocalContext.current
 
     if (index != 0) {
-        Divider(color = MaterialTheme.colorScheme.secondaryContainer)
+        HorizontalDivider(color = MaterialTheme.colorScheme.secondaryContainer)
     }
 
     Row(
@@ -186,13 +184,12 @@ private fun buildFirstInstruction() = buildAnnotatedString {
 }
 
 @Composable
-fun getColor(color: Int): Color {
-    val context = LocalContext.current
-
-    return colorResource(id = remember(key1 = color) {
-        context.getColorFromAttrs(color).resourceId
-    })
-}
-private fun Context.getColorFromAttrs(attr: Int) = TypedValue().apply {
-    theme.resolveAttribute(attr, this, true)
+fun getColor(color: Int) = LocalContext.current.theme.let { theme ->
+    colorResource(
+        remember(key1 = color) {
+            TypedValue().apply {
+                theme.resolveAttribute(color, this, true)
+            }.resourceId
+        }
+    )
 }

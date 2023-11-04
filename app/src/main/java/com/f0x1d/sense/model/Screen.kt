@@ -1,8 +1,8 @@
 package com.f0x1d.sense.model
 
 sealed class Screen(val route: String) {
-    object Chats: Screen("chats")
-    object Chat: Screen("chat")
-    object Pictures: Screen("pictures")
-    object Settings: Screen("settings")
+    data object Chats: Screen("chats")
+    data object Chat: Screen("chat")
+    data object Pictures: Screen("pictures")
+    data object Settings: Screen("settings")
 }

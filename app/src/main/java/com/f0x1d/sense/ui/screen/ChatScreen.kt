@@ -2,7 +2,6 @@ package com.f0x1d.sense.ui.screen
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
@@ -54,7 +53,7 @@ import com.f0x1d.sense.ui.widget.TypingMessage
 import com.f0x1d.sense.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(navController: NavController) {
     val viewModel = hiltViewModel<ChatViewModel>()

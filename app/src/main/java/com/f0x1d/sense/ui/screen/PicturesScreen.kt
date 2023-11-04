@@ -89,7 +89,7 @@ fun PicturesScreen(navController: NavController) {
                         value = viewModel.query,
                         onValueChange = { viewModel.query = it },
                         enabled = !viewModel.loading,
-                        label = { Text(text = stringResource(R.string.picture)) },
+                        label = { Text(text = stringResource(R.string.prompt)) },
                         shape = RoundedCornerShape(12.dp),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
                         keyboardActions = KeyboardActions(onGo = {

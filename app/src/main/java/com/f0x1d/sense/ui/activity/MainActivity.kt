@@ -64,7 +64,9 @@ class MainActivity: ComponentActivity() {
                                 composable(
                                     route = "${Screen.Chat.route}/{id}",
                                     arguments = listOf(
-                                        navArgument("id") { type = NavType.LongType }
+                                        navArgument("id") {
+                                            type = NavType.LongType
+                                        }
                                     ),
                                     enterTransition = { fadeIn() },
                                     exitTransition = { fadeOut() }

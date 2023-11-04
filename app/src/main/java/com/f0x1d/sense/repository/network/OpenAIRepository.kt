@@ -57,12 +57,8 @@ class OpenAIRepository @Inject constructor(
 
                 lineResponse.choices.firstOrNull()?.also { choice ->
                     choice.delta?.content?.takeIf { it.isNotEmpty() }?.also { content ->
-                        var currentContent = contents[choice.index]
-
-                        currentContent = if (currentContent == null)
-                            content
-                        else
-                            currentContent + content
+                        var currentContent = contents[choice.index] ?: ""
+                        currentContent += content
 
                         contents[choice.index] = currentContent
 

@@ -13,11 +13,7 @@
     <string name="releases">Релизы</string>
     <string name="information">Информация</string>
     <string name="delete">Удалить</string>
-    <string name="theme">Тема</string>
-    <string name="follow_system">Системная</string>
-    <string name="light">Светлая</string>
-    <string name="dark">Тёмная</string>
-    <string name="fullscreen">Полный экран</string>
+    <string name="prompt">Запрос</string>
 
     <string name="api_key_is_required_to_access_api">Ключ необходим для доступа к API OpenAI</string>
     <string name="how_to_get_it">Как его получить</string>

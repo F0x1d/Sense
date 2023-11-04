@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
-    @ChatId private val chatId: Long,
+    @ChatId val chatId: Long,
     private val database: AppDatabase,
     private val openAIRepository: OpenAIRepository,
     application: Application
@@ -82,7 +82,12 @@ class ChatViewModel @Inject constructor(
         }
 
         database.messagesDao().insert(
-            responseMessages.values.map { it.copy(generating = false, content = it.content?.trim()) }
+            responseMessages.values.map {
+                it.copy(
+                    generating = false,
+                    content = it.content?.trim()
+                )
+            }
         )
     }, errorBlock = {
         database.messagesDao().apply {

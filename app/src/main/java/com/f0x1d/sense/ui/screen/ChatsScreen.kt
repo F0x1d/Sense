@@ -108,7 +108,6 @@ fun ChatsScreen(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun InfoDialog(opened: Boolean, onClose: () -> Unit) {
     if (!opened) return

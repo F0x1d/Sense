@@ -2,18 +2,15 @@ package com.f0x1d.sense.viewmodel
 
 import android.app.Application
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.f0x1d.sense.store.datastore.SettingsDataStore
 import com.f0x1d.sense.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,42 +19,26 @@ class SettingsViewModel @Inject constructor(
     application: Application
 ): BaseViewModel(application) {
 
-    val endpoint = mutableStateOf("")
-    val apiKey = mutableStateOf("")
-    val model = mutableStateOf("")
+    var endpoint by mutableStateOf("")
+    var apiKey by mutableStateOf("")
+    var model by mutableStateOf("")
 
-    private val fillings = mutableMapOf<MutableState<String>, suspend () -> String?>()
-    private val mutexes = mutableMapOf<MutableState<String>, Mutex>()
-    private val actions = mutableMapOf<MutableState<String>, suspend (String) -> Unit>()
+    var changesMade by mutableStateOf(false)
 
     init {
-        fillings[endpoint] = { settingsDataStore.endpoint.first() }
-        fillings[apiKey] = { settingsDataStore.apiKey.first() }
-        fillings[model] = { settingsDataStore.model.first() }
-
-        actions[endpoint] = { settingsDataStore.saveEndpoint(it) }
-        actions[apiKey] = { settingsDataStore.saveApiKey(it) }
-        actions[model] = { settingsDataStore.saveModel(it) }
-
         viewModelScope.launch {
-            fillings.entries.map {
-                async {
-                    StateWithValue(it.key, it.value.invoke())
-                }
-            }.awaitAll().forEach {
-                it.state.value = it.value ?: ""
-            }
+            endpoint = settingsDataStore.endpoint.first()
+            apiKey = settingsDataStore.apiKey.first() ?: ""
+            model = settingsDataStore.model.first()
         }
     }
 
-    fun updateFor(state: MutableState<String>, value: String) {
-        state.value = value
+    fun save(onSaved: () -> Unit) = viewModelScope.launch {
+        settingsDataStore.saveEndpoint(endpoint)
+        settingsDataStore.saveApiKey(apiKey)
+        settingsDataStore.saveModel(model)
 
-        viewModelScope.launch(Dispatchers.IO) {
-            mutexes.getOrPut(state) { Mutex() }.withLock {
-                actions[state]?.invoke(value)
-            }
-        }
+        onSaved()
     }
 
     private data class StateWithValue(

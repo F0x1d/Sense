@@ -17,11 +17,7 @@
     <string name="information">Information</string>
     <string name="version" translatable="false">v%s (%d)</string>
     <string name="delete">Delete</string>
-    <string name="theme">Theme</string>
-    <string name="follow_system">Follow system</string>
-    <string name="light">Light</string>
-    <string name="dark">Dark</string>
-    <string name="fullscreen">Fullscreen</string>
+    <string name="prompt">Prompt</string>
 
     <string name="api_key_is_required_to_access_api">Key is required to access OpenAI API</string>
     <string name="how_to_get_it">How to get it</string>
