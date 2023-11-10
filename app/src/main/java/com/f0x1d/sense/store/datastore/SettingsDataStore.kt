@@ -1,6 +1,7 @@
 package com.f0x1d.sense.store.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.f0x1d.sense.SenseApplication
 import com.f0x1d.sense.store.datastore.base.BaseDataStore
@@ -18,6 +19,7 @@ class SettingsDataStore @Inject constructor(@ApplicationContext context: Context
         val ENDPOINT_KEY = stringPreferencesKey("endpoint")
         val API_KEY_KEY = stringPreferencesKey("api_key")
         val MODEL_KEY = stringPreferencesKey("model")
+        val TEMPERATURE_KEY = floatPreferencesKey("temperature")
     }
 
     val endpoint = getAsFlow(ENDPOINT_KEY).map {
@@ -27,8 +29,12 @@ class SettingsDataStore @Inject constructor(@ApplicationContext context: Context
     val model = getAsFlow(MODEL_KEY).map {
         it ?: "gpt-3.5-turbo"
     }
+    val temperature = getAsFlow(TEMPERATURE_KEY).map {
+        it ?: 1f
+    }
 
     suspend fun saveEndpoint(endpoint: String?) = save(ENDPOINT_KEY, endpoint)
     suspend fun saveApiKey(apiKey: String?) = save(API_KEY_KEY, apiKey)
     suspend fun saveModel(model: String?) = save(MODEL_KEY, model)
+    suspend fun saveTemperature(temperature: Float?) = save(TEMPERATURE_KEY, temperature)
 }

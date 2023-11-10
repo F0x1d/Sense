@@ -33,7 +33,8 @@ class OpenAIRepository @Inject constructor(
         val response = openAIService.generateMessagesStream(
             GenerateMessagesRequestBody(
                 messages,
-                settingsDataStore.model.first()
+                settingsDataStore.model.first(),
+                settingsDataStore.temperature.first()
             )
         ).execute()
 

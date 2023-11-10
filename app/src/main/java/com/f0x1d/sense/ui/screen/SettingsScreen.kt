@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -86,6 +88,16 @@ fun SettingsScreen(navController: NavController) {
                     labelResource = R.string.model,
                     viewModel = viewModel
                 )
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+                SettingsTextField(
+                    value = viewModel.temperature,
+                    onValueChange = { viewModel.temperature = it },
+                    labelResource = R.string.temperature,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    viewModel = viewModel
+                )
             }
 
             androidx.compose.animation.AnimatedVisibility(
@@ -121,6 +133,7 @@ private fun SettingsTextField(
     value: String,
     onValueChange: (String) -> Unit,
     @StringRes labelResource: Int,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     viewModel: SettingsViewModel
 ) {
     OutlinedTextField(
@@ -131,6 +144,7 @@ private fun SettingsTextField(
             viewModel.changesMade = true
         },
         label = { Text(text = stringResource(id = labelResource)) },
+        keyboardOptions = keyboardOptions,
         shape = RoundedCornerShape(12.dp)
     )
 }

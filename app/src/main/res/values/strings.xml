@@ -18,6 +18,7 @@
     <string name="version" translatable="false">v%s (%d)</string>
     <string name="delete">Delete</string>
     <string name="prompt">Prompt</string>
+    <string name="temperature">Temperature</string>
 
     <string name="api_key_is_required_to_access_api">Key is required to access OpenAI API</string>
     <string name="how_to_get_it">How to get it</string>

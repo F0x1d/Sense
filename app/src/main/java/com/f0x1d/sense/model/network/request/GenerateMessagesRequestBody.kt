@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
 data class GenerateMessagesRequestBody(
     @SerializedName("messages") val messages: List<ChatMessage>,
     @SerializedName("model") val model: String,
+    @SerializedName("temperature") val temperature: Float,
     @SerializedName("stream") val stream: Boolean = true
 )
