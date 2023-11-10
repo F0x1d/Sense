@@ -1,6 +1,7 @@
 package com.f0x1d.sense.repository.network
 
 import com.f0x1d.sense.database.entity.ChatMessage
+import com.f0x1d.sense.model.network.request.GenerateAudioRequestBody
 import com.f0x1d.sense.model.network.request.GenerateImageRequestBody
 import com.f0x1d.sense.model.network.request.GenerateMessagesRequestBody
 import com.f0x1d.sense.model.network.response.GenerateMessagesResponse
@@ -24,6 +25,26 @@ class OpenAIRepository @Inject constructor(
     private val settingsDataStore: SettingsDataStore,
     private val gson: Gson
 ): BaseRepository() {
+
+    suspend fun generateAudio(
+        model: String,
+        input: String,
+        voice: String,
+        format: String,
+        speed: Float
+    ) = openAIService.generateAudio(
+        GenerateAudioRequestBody(
+            model = model,
+            input = input,
+            voice = voice,
+            responseFormat = format,
+            speed = speed
+        )
+    ).apply {
+        if (errorBody() != null) {
+            throw HttpException(this)
+        }
+    }.body()
 
     suspend fun generateImage(prompt: String) = openAIService.generateImage(
         GenerateImageRequestBody(prompt)

@@ -12,13 +12,14 @@
     <string name="picture">Picture</string>
     <string name="pictures">Pictures</string>
     <string name="download_started">Download started</string>
-    <string name="github" translatable="false">GitHub</string>
-    <string name="releases">Releases</string>
-    <string name="information">Information</string>
-    <string name="version" translatable="false">v%s (%d)</string>
     <string name="delete">Delete</string>
     <string name="prompt">Prompt</string>
     <string name="temperature">Temperature</string>
+    <string name="audio">Audio</string>
+    <string name="voice">Voice</string>
+    <string name="text">Text</string>
+    <string name="speed">Speed</string>
+    <string name="file_format">File format</string>
 
     <string name="api_key_is_required_to_access_api">Key is required to access OpenAI API</string>
     <string name="how_to_get_it">How to get it</string>

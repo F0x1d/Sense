@@ -1,9 +1,6 @@
 package com.f0x1d.sense.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.f0x1d.sense.database.AppDatabase
 import com.f0x1d.sense.database.entity.Chat
@@ -20,8 +17,6 @@ class ChatsViewModel @Inject constructor(
     private val database: AppDatabase,
     application: Application
 ): BaseViewModel(application) {
-
-    var infoDialogOpened by mutableStateOf(false)
 
     val chatsWithMessages = database.chatsDao().getAll().map {
         it.sortedByDescending { chatWithMessages ->

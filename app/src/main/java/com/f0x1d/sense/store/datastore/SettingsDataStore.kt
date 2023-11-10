@@ -11,7 +11,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SettingsDataStore @Inject constructor(@ApplicationContext context: Context): BaseDataStore(context, DATA_STORE_NAME) {
+class SettingsDataStore @Inject constructor(
+    @ApplicationContext context: Context
+): BaseDataStore(context, DATA_STORE_NAME) {
 
     companion object {
         const val DATA_STORE_NAME = "settings_data"

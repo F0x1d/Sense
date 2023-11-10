@@ -84,7 +84,12 @@ fun PicturesScreen(navController: NavController) {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp)
+                            .padding(
+                                top = 3.dp,
+                                start = 10.dp,
+                                end = 10.dp,
+                                bottom = 10.dp
+                            )
                             .animateItemPlacement(),
                         value = viewModel.query,
                         onValueChange = { viewModel.query = it },

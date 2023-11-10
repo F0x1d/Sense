@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.f0x1d.sense.model.Screen
+import com.f0x1d.sense.ui.screen.AudioScreen
 import com.f0x1d.sense.ui.screen.ChatScreen
 import com.f0x1d.sense.ui.screen.ChatsScreen
 import com.f0x1d.sense.ui.screen.PicturesScreen
@@ -80,6 +81,14 @@ class MainActivity: ComponentActivity() {
                                     exitTransition = { fadeOut() }
                                 ) {
                                     PicturesScreen(navController = navController)
+                                }
+                                
+                                composable(
+                                    route = Screen.Audio.route,
+                                    enterTransition = { fadeIn() },
+                                    exitTransition = { fadeOut() }
+                                ) {
+                                    AudioScreen(navController = navController)
                                 }
 
                                 composable(

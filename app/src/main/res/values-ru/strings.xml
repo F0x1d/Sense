@@ -10,11 +10,14 @@
     <string name="picture">Изображение</string>
     <string name="pictures">Изображения</string>
     <string name="download_started">Загрузка началась</string>
-    <string name="releases">Релизы</string>
-    <string name="information">Информация</string>
     <string name="delete">Удалить</string>
     <string name="prompt">Запрос</string>
     <string name="temperature">Температура</string>
+    <string name="audio">Аудио</string>
+    <string name="voice">Голос</string>
+    <string name="text">Текст</string>
+    <string name="speed">Скорость</string>
+    <string name="file_format">Формат файла</string>
 
     <string name="api_key_is_required_to_access_api">Ключ необходим для доступа к API OpenAI</string>
     <string name="how_to_get_it">Как его получить</string>

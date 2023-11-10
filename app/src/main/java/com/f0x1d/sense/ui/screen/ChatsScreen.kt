@@ -8,16 +8,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.f0x1d.sense.BuildConfig
 import com.f0x1d.sense.R
-import com.f0x1d.sense.extensions.openLink
 import com.f0x1d.sense.model.Screen
 import com.f0x1d.sense.ui.widget.Chat
 import com.f0x1d.sense.ui.widget.ErrorAlertDialog
@@ -37,9 +34,9 @@ fun ChatsScreen(navController: NavController) {
             LargeTopAppBar(
                 title = { Text(text = stringResource(id = R.string.chats)) },
                 actions = {
-                    IconButton(onClick = { viewModel.infoDialogOpened = true }) {
+                    IconButton(onClick = { navController.navigate(Screen.Audio.route) }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_info),
+                            painter = painterResource(id = R.drawable.ic_audio),
                             contentDescription = null
                         )
                     }
@@ -99,35 +96,9 @@ fun ChatsScreen(navController: NavController) {
                 contentDescription = null
             )
         }
-
-        InfoDialog(opened = viewModel.infoDialogOpened) {
-            viewModel.infoDialogOpened = false
-        }
         
         ErrorAlertDialog(viewModel = viewModel)
     }
-}
-
-@Composable
-private fun InfoDialog(opened: Boolean, onClose: () -> Unit) {
-    if (!opened) return
-    val context = LocalContext.current
-
-    AlertDialog(
-        onDismissRequest = onClose,
-        title = { Text(text = stringResource(id = R.string.information)) },
-        text = { Text(text = stringResource(id = R.string.version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)) },
-        confirmButton = {
-            TextButton(onClick = { context.openLink("https://github.com/F0x1d/Sense") }) {
-                Text(text = stringResource(id = R.string.github))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = { context.openLink("https://t.me/f0x1dsshit") }) {
-                Text(text = stringResource(id = R.string.releases))
-            }
-        }
-    )
 }
 
 @Composable
